@@ -23,36 +23,50 @@
             <div class="panel-heading">
               <h3>Player Stats</h3>
             </div>
-
-            <div class="panel-body">
-              <div id="plr-blood-glucose" class="">
-                <label>Player Blood Glucose: </label>
-                {{bloodGlucose}}
-              </div>
-              <div id="plr-hearts-value" style="display: block;">
-                <label>Player hearts: </label>
-                <div class="plr-health-bar">
-                  <div class="plr-health-bar--overlay" style=""></div>
+            <div class="row">
+              <div class="col-xs-6">
+                <div class="panel-body">
+                  <div id="plr-blood-glucose" class="">
+                    <label>Player Blood Glucose: </label>
+                    {{bloodGlucose}}
+                  </div>
+                  <div id="plr-hearts-value" style="display: block;">
+                    <label>Player hearts: </label>
+                    <div class="plr-health-bar">
+                      <div class="plr-health-bar--overlay" style=""></div>
+                    </div>
+                    {{playerHeartsValue}}/{{playerHeartsMax}}
+                  </div>
+                  <div id="plr-food-value">
+                    <label> Player food: </label>
+                    <div class="plr-hunger-bar">
+                      <div class="plr-hunger-bar--overlay" style=""></div>
+                    </div>
+                    10/10
+                  </div>
+                  <div id="plr-insulin" style="display: block;">
+                    <label>Player Insulin: </label>
+                    {{insulinUnitsInSystem}}
+                  </div>
+                  <div id="plr-carbs" style="display: block;">
+                    <label>Player Carbs: </label>
+                    {{carbsInSystem}}
+                  </div>
                 </div>
-                {{playerHeartsValue}}/{{playerHeartsMax}}
               </div>
-              <div id="plr-food-value">
-                <label> Player food: </label>
-                <div class="plr-hunger-bar">
-                  <div class="plr-hunger-bar--overlay" style=""></div>
+              <div class="col-xs-6">
+                <div class="plr-avatar-img">
+                  <div class="plr-avatar-img--alive">
+                    <img src="./img/avatar_alive.gif"/>
+                  </div>
+                  <div class="plr-avatar-img--dead">
+                    <img src="./img/avatar_dead.png"/>
+                    <p>Here Lies<br>[[player name]]</p>
                 </div>
-                10/10
-              </div>
-              <div id="plr-insulin" style="display: block;">
-                <label>Player Insulin: </label>
-                {{insulinUnitsInSystem}}
-              </div>
-              <div id="plr-carbs" style="display: block;">
-                <label>Player Carbs: </label>
-                {{carbsInSystem}}
               </div>
             </div>
           </div>
+        </div>
         </div>
 
         <div class="col-md-6">
