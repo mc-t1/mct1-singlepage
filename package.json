@@ -1,0 +1,22 @@
+{
+  "name": "mct1-singlepage",
+  "version": "1.0.0",
+  "description": "Naive implementation of insulin and blood glucose interaction, for educational purposes.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mc-t1/mct1-singlepage.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mc-t1/mct1-singlepage/issues"
+  },
+  "homepage": "https://github.com/mc-t1/mct1-singlepage#readme",
+  "dependencies": {
+    "vue": "^2.1.10"
+  }
+}

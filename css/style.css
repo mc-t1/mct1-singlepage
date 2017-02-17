@@ -1,0 +1,46 @@
+#app-config .input-group {
+  margin: 0.3em;
+}
+.panel-default {
+  box-shadow: 3px 3px 11px #333;
+}
+#feedback {
+  background-color: #333;
+}
+.feedback-item {
+  color: #00FF00;
+}
+
+.feedback-item:hover {
+  color: lightgreen;
+  background-color: #000;
+}
+body {
+  background-color: #999;
+}
+#heart-nav {
+  background-image: url("../img/Heart.svg");
+  background-repeat: repeat-x;
+  background-size: 1.5em 1.5em;
+  background-color: #333;
+  height: 4.5em;
+  color: white;
+  text-align: center;
+  border-bottom: 0.3em solid #eee;
+  box-shadow: 2px 2px 13px #000;
+  font-family: 'Bungee', cursive;
+}
+
+.plr-health-bar {
+  width: 200px;
+  height: 20px;
+  background-image: url(../img/mc_heart_20__empty.png);
+  background-repeat: repeat-x;
+}
+.plr-health-bar--overlay {
+  position: absolute;
+  width: 200px;
+  height: 20px;
+  background-image: url(../img/mc_heart_20.png);
+  background-repeat: repeat-x;
+}
