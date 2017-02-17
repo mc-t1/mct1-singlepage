@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/mc-t1/mct1-singlepage#readme",
   "dependencies": {
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.1.1",
     "vue": "^2.1.10"
   }
 }
