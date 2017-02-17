@@ -37,10 +37,28 @@ body {
   background-image: url(../img/mc_heart_20__empty.png);
   background-repeat: repeat-x;
 }
+
 .plr-health-bar--overlay {
   position: absolute;
   width: 200px;
   height: 20px;
   background-image: url(../img/mc_heart_20.png);
   background-repeat: repeat-x;
+}
+
+.plr-hunger-bar {
+  width: 200px;
+  height: 20px;
+  background-image: url(../img/empty_hunger.png);
+  background-repeat: repeat-x;
+  background-size:20px 20px;
+}
+
+.plr-hunger-bar--overlay {
+  position: absolute;
+  width: 200px;
+  height: 20px;
+  background-image: url(../img/hunger.png);
+  background-repeat: repeat-x;
+  background-size:20px 20px;
 }
