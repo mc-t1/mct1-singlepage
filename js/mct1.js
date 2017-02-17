@@ -20,17 +20,21 @@ var vue = new Vue({
       insulinUnitsInSystem: 0,
       carbsInSystem: 0,
       feedbackMessages: [],
-      playerHeartsValue: 10,
-      playerHeartsMax: 10,
-      playerFoodValue:10,
-      playerFoodMax: 10,
+      playerHeartsValue: 20,
+      playerHeartsMax: 20,
+      playerFoodValue: 20,
+      playerFoodMax: 20,
       playerName:'Billy'
     }
   },
   created: function(){
-    console.log("created");
+    // console.log("created");
+    setInterval(this.iterateExhaustion, 1000);
   },
   methods: {
+    iterateExhaustion: function () {
+      this.playerHeartsValue -= 1;
+    },
     eatFood: function(){
       this.carbsInSystem += this.foodValue * this.foodUnits;
       this.feedbackMessages.push(
