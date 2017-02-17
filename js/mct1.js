@@ -2,8 +2,8 @@ var dummyCarbsMap = {
   "15" : "Bread",
   "30" : "Watermelon",
   "45" : "Cookie"
-}
-"use strict";
+};
+// "use strict";
 
 var vue = new Vue({
   el: "#app",
@@ -27,7 +27,7 @@ var vue = new Vue({
       playerFoodMax: 20,
       playerName:'Billy',
       playerIsDead: false,
-      gameLoopInterval: 100,
+      gameLoopInterval: 5000,
       gameLoopTimer: null,
     };
   },
@@ -35,6 +35,15 @@ var vue = new Vue({
     this.startGameLoop();
   },
   methods: {
+    chewFood: function () {
+      var rand = Math.floor((Math.random() * 2) + 1);
+      var audio = new Audio('../mp3/minecraft_chewing_'+rand+'.mp3');
+      audio.play();
+    },
+    slurpPotion: function () {
+      var audio = new Audio('../mp3/minecraft_drinking_potion_1.mp3');
+      audio.play();
+    },
     startGameLoop: function () {
       console.log('this.gameLoopInterval', this.gameLoopInterval);
       this.gameLoopTimer = setInterval(this.iterateExhaustion, this.gameLoopInterval);

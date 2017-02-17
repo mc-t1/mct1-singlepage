@@ -44,6 +44,17 @@
                     </div>
                     <!-- {{playerFoodValue}}/{{playerFoodMax}} -->
                   </div>
+
+                  <div id="plr-bgl-value">
+                    <label> Player BGL: </label>
+                    <div class="plr-bgl-bar">
+                      <img src="../img/minecraft_xp_bar.png" />
+                      <!-- <div class="plr-xs-bar--overlay" v-bind:style="{ width: (playerFoodValue * 10) + 'px' }"></div> -->
+                    </div>
+                    <!-- {{playerFoodValue}}/{{playerFoodMax}} -->
+                  </div>
+
+
                   <div id="plr-insulin" style="display: block;">
                     <label>Player Insulin: </label>
                     {{insulinUnitsInSystem}}
@@ -77,6 +88,14 @@
             </div>
 
             <div class="panel-body">
+              <div class="food" v-on:click="chewFood">
+                <img src="./img/foods.png" width="300"/>
+              </div>
+
+              <div class="potion" v-on:click="slurpPotion">
+                <img src="./img/potion_of_swiftness.png" width="100"/>
+              </div>
+
               <label>Choose food</label>
               <div class="input-group">
 

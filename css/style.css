@@ -85,5 +85,19 @@ body {
   top: 21px;
   left: 89px;
   text-align: center;
-
 }
+
+.food {
+  width: 65%;
+  display: inline-block;
+}
+
+.potion {
+  width: 25%;
+  display: inline-block;
+}
+
+.food img, .potion img {
+  width: 100%;
+}
+
