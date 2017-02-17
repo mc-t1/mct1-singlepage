@@ -4,6 +4,7 @@ var dummyCarbsMap = {
   "45" : "Cookie"
 }
 "use strict";
+
 var vue = new Vue({
   el: "#app",
   template: "#vueroot",
@@ -24,16 +25,34 @@ var vue = new Vue({
       playerHeartsMax: 20,
       playerFoodValue: 20,
       playerFoodMax: 20,
-      playerName:'Billy'
-    }
+      playerName:'Billy',
+      playerIsDead: false,
+      gameLoopInterval: 100,
+      gameLoopTimer: null,
+    };
   },
   created: function(){
-    // console.log("created");
-    setInterval(this.iterateExhaustion, 1000);
+    this.startGameLoop();
   },
   methods: {
+    startGameLoop: function () {
+      console.log('this.gameLoopInterval', this.gameLoopInterval);
+      this.gameLoopTimer = setInterval(this.iterateExhaustion, this.gameLoopInterval);
+    },
+    stopGameLoop: function () {
+      clearInterval(this.gameLoopTimer);
+    },
     iterateExhaustion: function () {
-      this.playerHeartsValue -= 1;
+      if (this.playerFoodValue > 0) {
+        this.playerFoodValue -= 1;
+      }
+      else if (this.playerHeartsValue > 0) {
+        this.playerHeartsValue -= 1;
+      }
+      else {
+        this.stopGameLoop();
+      }
+
     },
     eatFood: function(){
       this.carbsInSystem += this.foodValue * this.foodUnits;
