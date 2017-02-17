@@ -22,6 +22,9 @@ var vue = new Vue({
       feedbackMessages: [],
       playerHeartsValue: 10,
       playerHeartsMax: 10,
+      playerFoodValue:10,
+      playerFoodMax: 10,
+      playerName:'Billy'
     }
   },
   created: function(){
