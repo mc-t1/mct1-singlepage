@@ -113,12 +113,16 @@ var vue = new Vue({
       var insulinAbsorbed;
       var toLowBGL = 5;
       var toHighBGL = 10;
-      console.log("BGL Value: ",this.playerBGLValue)
+      
       if (this.playerBGLValue > toLowBGL) {
-        //if value is less then certain playerBGL do stuff
-      }
-      if (this.playerBGLValue < toHighBGL) {
-        //if value is higher then certain playerBGL do otheer stuff
+        console.log('BGL TOO LOW: ', this.playerBGLValue);
+
+      } else if (this.playerBGLValue < toHighBGL) {
+        console.log('BGL TOO HIGH: ', this.playerBGLValue);
+
+      } else {
+        console.log('BGL NORMAL: ', this.playerBGLValue);
+        
       }
       
       console.log("In this tick:");
