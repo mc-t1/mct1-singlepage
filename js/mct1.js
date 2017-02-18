@@ -191,7 +191,7 @@ var vue = new Vue({
           console.log(`I absorbed ${excessInsulin} units above my requirement [*see comment]`);
         }
       }
-      console.log(`My BGL is ${BGL}`);
+      console.log(`My BGL is ${this.playerBGLValue}`);
       stats.BGL = this.playerBGLValue;
       connect.push('spa-stats-collection', stats);
 
