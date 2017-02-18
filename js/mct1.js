@@ -46,21 +46,23 @@ var vue = new Vue({
       playerCarbsMax: 20,
       playerName:'Billy',
       playerIsDead: false,
-      gameLoopInterval: 500,
+      gameLoopInterval: 2000,
       gameLoopTimer: null,
       bglisLow:false,
       bglisHigh: false,
       foods : foodList(),
       chew_audio:null,
       drink_audio:null,
+      insulineDoseUnits:5,
+      currentFoodValue: 0,
     };
   },
   created: function(){
     this.startGameLoop();
-    console.log(this.foods);
   },
   methods: {
-    chewFood: function () {
+    chewFood: function (food) {
+      this.currentFoodValue = food;
       if (this.chew_audio != null) {
         this.chew_audio.pause();
         this.chew_audio.currentTime = 0;
@@ -68,7 +70,6 @@ var vue = new Vue({
 
       var rand = Math.floor((Math.random() * 2) + 1);
        this.chew_audio = new Audio('./mp3/minecraft_chewing_'+rand+'.mp3');
-       console.log(new Audio('./mp3/minecraft_chewing_'+rand+'.mp3').duration)
 
       this.chew_audio.play();
 
@@ -82,10 +83,9 @@ var vue = new Vue({
       }
       this.drink_audio = new Audio('./mp3/minecraft_drinking_potion_1.mp3');
       this.drink_audio.play();
-      complete_drink_tid = setTimeout(this.takeInsulin, 1671.837)
+      complete_drink_tid = setTimeout(this.takeInsulin, 1671.837);
     },
     stopSlurp: function() {
-      console.log(this.drink_audio.duration);
       if (!this.drink_audio.ended) {
         clearInterval(complete_drink_tid);
       }
@@ -93,7 +93,6 @@ var vue = new Vue({
       this.drink_audio.currentTime = 0;
     },
     stopChew : function() {
-      console.log(this.chew_audio.duration)
       if (!this.chew_audio.ended) {
         clearInterval(complete_chew_tid);
       }
@@ -126,14 +125,25 @@ var vue = new Vue({
       this.updateSimpleModel();
     },
     takeInsulin: function(){
-      this.insulinUnitsInSystem += this.insulinUnits;
-      this.feedbackMessages.push("CMD RUN: /t1 take " + this.insulinUnits + " insulin");
-
-      this.feedbackMessages.push("USR MSG: you took " + this.insulinUnits + " units of insulin");
-      this.updateSimpleModel();
+      this.playerInsulinValue += this.insulineDoseUnits;
+      // Ensure not exceed max!
+      this.playerInsulinValue = this.playerInsulinValue > this.playerInsulinMax ? this.playerInsulinMax : this.playerInsulinValue;
+      // this.insulinUnitsInSystem += this.insulinUnits;
+      // this.feedbackMessages.push("CMD RUN: /t1 take " + this.insulinUnits + " insulin");
+      //
+      // this.feedbackMessages.push("USR MSG: you took " + this.insulinUnits + " units of insulin");
+      // this.updateSimpleModel();
     },
     updateSimpleModel: function(){
       // increase bgl
+      var newFoodValue = parseInt(this.playerFoodValue) + parseInt(this.currentFoodValue);
+      console.log(this.playerFoodValue);
+      console.log(this.currentFoodValue);
+      if (newFoodValue > 20) {
+        this.playerFoodValue = 20;
+      } else {
+        this.playerFoodValue = newFoodValue;
+      }
       msg_bgl_changes = "USR MSG: Your stomach digests " + this.carbsInSystem;
       this.bloodGlucose += (
           this.carbsInSystem * 0.25
@@ -158,14 +168,7 @@ var vue = new Vue({
       }
       this.bloodGlucose -= actualAbsorbedInsulin * this.bglReferenceUnit();
       // -- check level of magic --
-      this.bglisLow = false;
-      this.bglisHigh = false;
-      if (this.bloodGlucose < this.configMinSafeBGL ) {
-        this.bglisLow = true;
-      }
-      else if (this.bloodGlucose > this.configMaxSafeBGL) {
-        this.bglisHigh = true;
-      }
+
       this.insulinUnitsInSystem -= actualAbsorbedInsulin;
 
       if(actualAbsorbedInsulin > 0) {
