@@ -41,7 +41,7 @@ var vue = new Vue({
       playerHeartsMax: 20,
       playerFoodValue: 20,
       playerFoodMax: 20,
-      playerInsulinValue: 20,
+      playerInsulinValue: 0,
       playerInsulinMax: 20,
       playerCarbsValue: 0,
       playerCarbsMax: 100,
