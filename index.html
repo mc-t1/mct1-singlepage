@@ -17,7 +17,7 @@
       <!-- MAIN APP / LOGIC COMPONENT-->
       <div class="single-root-container container" style="margin-top: 5em;">
       <div class="row">
-        <div id="app-container" class="col-md-6">
+        <div id="app-container" class="col-md-12">
           <div id="player-insulin-info" class="panel panel-default">
             <!-- PLAYER INSULIN INFO BODY -->
             <div class="panel-heading">
@@ -25,19 +25,30 @@
             </div>
             <div class="row">
               <div class="col-xs-6">
+                <div class="plr-avatar-img">
+                  <div class="plr-avatar-img--alive" v-bind:style="{ display: (playerHeartsValue > 0) ? 'block' : 'none' }">
+                    <img src="./img/avatar_alive.gif"/>
+                  </div>
+                  <div class="plr-avatar-img--dead" v-bind:style="{ display: (playerHeartsValue > 0) ? 'none' : 'block' }">
+                    <img src="./img/avatar_dead.png"/>
+                    <p>Here Lies<br>{{playerName}}</p>
+                </div>
+              </div>
+            </div>
+              <div class="col-xs-12">
                 <div class="panel-body">
                   <div id="plr-blood-glucose" class="">
                     <label>Player Blood Glucose: </label>
                     {{bloodGlucose}}
                   </div>
-                  <div id="plr-hearts-value" style="display: block;">
+                  <div class="col-xs-6" id="plr-hearts-value" style="display: block;">
                     <label>Player hearts: </label>
                     <div class="plr-health-bar">
                       <div class="plr-health-bar--overlay" v-bind:style="{ width: (playerHeartsValue * 10) + 'px' }"></div>
                     </div>
                     <!-- {{playerHeartsValue}}/{{playerHeartsMax}} -->
                   </div>
-                  <div id="plr-food-value">
+                  <div class="col-xs-6" id="plr-food-value">
                     <label> Player food: </label>
                     <div class="plr-hunger-bar">
                       <div class="plr-hunger-bar--overlay" v-bind:style="{ width: (playerFoodValue * 10) + 'px' }"></div>
@@ -48,9 +59,11 @@
                   <div id="plr-bgl-value">
                     <label> Player BGL: </label>
                     <div class="plr-bgl-bar">
-                      <div class="plr-bgl-bar--overlay" v-bind:style="{ width: (playerFoodValue * 10) + 'px' }"></div> -->
+                      <div class="plr-bgl-bar--overlay"
+                        v-bind:class="{ bglHigh: bglisHigh, bglLow: bglisLow }" v-bind:style="{ width: ((bloodGlucose/20)*200) + 'px'}"></div>
                     </div>
-                    <!-- {{playerFoodValue}}/{{playerFoodMax}} -->
+                    <!-- v-bind:class="{bgl-low: bglisLow, bgl-high: bglisHigh, bgl-crit-high: bglisCritHigh}"
+                    {{playerFoodValue}}/{{playerFoodMax}} -->
                   </div>
 
 
@@ -64,17 +77,6 @@
                   </div>
                 </div>
               </div>
-              <div class="col-xs-6">
-                <div class="plr-avatar-img">
-                  <div class="plr-avatar-img--alive" v-bind:style="{ display: (playerHeartsValue > 0) ? 'block' : 'none' }">
-                    <img src="./img/avatar_alive.gif"/>
-                  </div>
-                  <div class="plr-avatar-img--dead" v-bind:style="{ display: (playerHeartsValue > 0) ? 'none' : 'block' }">
-                    <img src="./img/avatar_dead.png"/>
-                    <p>Here Lies<br>{{playerName}}</p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
         </div>

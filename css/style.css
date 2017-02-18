@@ -74,10 +74,21 @@ body {
   position: absolute;
   width: 200px;
   height:  5.7px;
-  background-image: url(../img/level_full.png);
+  background-image: url(../img/level_canCast.png);
   background-repeat: none;
   background-size:200px 5.7px;
+  max-width: 200px;
 }
+
+.plr-bgl-bar--overlay.bglLow {
+  background-image: url(../img/low_energy.png);
+}
+
+.plr-bgl-bar--overlay.bglHigh {
+  background-image: url(../img/level_full.png);
+}
+
+
 
 .plr-avatar-img {
   padding:45px 10px;

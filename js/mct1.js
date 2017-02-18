@@ -3,8 +3,19 @@ var dummyCarbsMap = {
   "30" : "Watermelon",
   "45" : "Cookie"
 };
-// "use strict";
 
+/*var Foods = {
+  "apple" : {
+    'foodValue' : '10',
+    'carbsValue' : '2'
+  },
+  "carrot" : {
+    'foodValue' : '5',
+    'carbsValue' : '5'
+  }
+}*/
+// "use strict";
+var images = []
 var vue = new Vue({
   el: "#app",
   template: "#vueroot",
@@ -14,7 +25,7 @@ var vue = new Vue({
       configMinSafeBGL: 4,
       configMaxSafeBGL: 8,
       configCriticalHighBGL: 20,
-      bloodGlucose: 6,
+      bloodGlucose: 0,
       foodValue: 15,
       foodUnits: 1,
       insulinUnits: 1,
@@ -29,10 +40,25 @@ var vue = new Vue({
       playerIsDead: false,
       gameLoopInterval: 500,
       gameLoopTimer: null,
+      bglisLow:false,
+      bglisHigh: false,
+      foods :{
+        "apple" : {
+          'foodValue' : '10',
+          'carbsValue' : '2',
+          'image':'Apple2.png'
+        },
+        "carrot" : {
+          'foodValue' : '5',
+          'carbsValue' : '5',
+          'image':'Carrot.png'
+        }
+      }
     };
   },
   created: function(){
     this.startGameLoop();
+    console.log(this.foods['apple']['foodValue']);
   },
   methods: {
     chewFood: function () {
@@ -117,6 +143,14 @@ var vue = new Vue({
         actualAbsorbedInsulin = this.insulinUnitsInSystem;
       }
       this.bloodGlucose -= actualAbsorbedInsulin * this.bglReferenceUnit();
+      // -- check level of magic --
+      this.bglisLow = false;
+      this.bglisHigh = false;
+      if (this.bloodGlucose < this.configMinSafeBGL ) {
+          this.bglisLow = true;
+      } else if (this.bloodGlucose > this.configMaxSafeBGL) {
+        this.bglisHigh = true;
+      }
 
       this.insulinUnitsInSystem -= actualAbsorbedInsulin;
 
