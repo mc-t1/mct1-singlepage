@@ -1,19 +1,6 @@
-var dummyCarbsMap = {
-  "15" : "Bread",
-  "30" : "Watermelon",
-  "45" : "Cookie"
-};
 
-/*var Foods = {
-  "apple" : {
-    'foodValue' : '10',
-    'carbsValue' : '2'
-  },
-  "carrot" : {
-    'foodValue' : '5',
-    'carbsValue' : '5'
-  }
-}*/
+
+
 // "use strict";
 var images = [];
 // var chew_audio;
@@ -29,12 +16,10 @@ var vue = new Vue({
       configMinSafeBGL: 4,
       configMaxSafeBGL: 8,
       configCriticalHighBGL: 20,
-      bloodGlucose: 0,
       foodValue: 15,
       foodUnits: 1,
       insulinUnits: 1,
       insulinUnitsInSystem: 0,
-      carbsInSystem: 0,
       currentFood: null,
       feedbackMessages: [],
       playerHeartsValue: 20,
@@ -50,7 +35,7 @@ var vue = new Vue({
       playerBGLValue: 5,
       playerBGLMAX:30,
       playerBGLDisplayMax:20,
-      gameLoopInterval: 2000,
+      gameLoopInterval: 5000,
       gameLoopTimer: null,
       bglisLow:false,
       bglisHigh: false,
@@ -124,7 +109,6 @@ var vue = new Vue({
       var insulinAbsorbed;
 
       // Absorb carbs
-
       if (this.playerCarbsValue - this.carbsAbsorptionRate > 0) {
           carbsAbsorbed = this.playerCarbsValue - this.carbsAbsorptionRate;
       } else {
@@ -171,9 +155,6 @@ var vue = new Vue({
 
     },
     eatFood: function(){
-      this.carbsInSystem += this.foodValue * this.foodUnits;
-      this.feedbackMessages.push("CMD RUN: /t1 eat " + this.foodUnits + " " + dummyCarbsMap[this.foodValue.toString()]);
-      this.feedbackMessages.push("USR MSG: you ate " + this.foodUnits + " pieces of " + dummyCarbsMap[this.foodValue.toString()]);
       var newFoodValue = parseInt(this.playerFoodValue) + parseInt(this.currentFood.restoration);
       if (newFoodValue > 20) {
         this.playerFoodValue = 20;
@@ -201,45 +182,43 @@ var vue = new Vue({
     },
     updateSimpleModel: function(){
       // increase bgl
-
-      console.log(this.playerFoodValue);
-      console.log(this.currentFoodValue);
-
-      msg_bgl_changes = "USR MSG: Your stomach digests " + this.carbsInSystem;
-      this.bloodGlucose += (
-          this.carbsInSystem * 0.25
-        );
-      if(this.carbsInSystem > 0) {
-        this.feedbackMessages.push(msg_bgl_changes + " which raises you blood glucose level to " + this.bloodGlucose);
-        this.feedbackMessages.push("USR MSG: The equation was: BGL = BGL + (carbs in system * 0.25)");
-      }
-      this.carbsInSystem = 0;
-
-      // decrease bgl by amount of insulin in system, to a maximum of zero
-      var toAbsorb = this.insulinUnitsInSystem * this.bglReferenceUnit();
-
-      toAbsorbDiffBGL = this.bloodGlucose - toAbsorb;
-      actualAbsorbedInsulin = 0;
-
-      if (toAbsorbDiffBGL < 0) {
-        actualAbsorbedInsulin = this.insulinUnitsInSystem - Math.abs(toAbsorbDiffBGL/this.bglReferenceUnit());
-      }
-      else {
-        actualAbsorbedInsulin = this.insulinUnitsInSystem;
-      }
-      this.bloodGlucose -= actualAbsorbedInsulin * this.bglReferenceUnit();
-      // -- check level of magic --
-
-      this.insulinUnitsInSystem -= actualAbsorbedInsulin;
-
-      if(actualAbsorbedInsulin > 0) {
-        this.feedbackMessages.push("USR MSG: " + actualAbsorbedInsulin + " units of insulin were used to process your blood glucose");
-        this.feedbackMessages.push("USR MSG: You gained health");
-      }else {
-        this.feedbackMessages.push("USR MSG: No blood glucose was processed into health.");
-      }
-
-      this.feedbackMessages.push("USR MSG: You have " + this.insulinUnitsInSystem + " insulin in your system");
+    //
+    //   console.log(this.playerFoodValue);
+    //   console.log(this.currentFoodValue);
+    //
+    //   msg_bgl_changes = "USR MSG: Your stomach digests " + this.carbsInSystem;
+    //
+    //   if(this.carbsInSystem > 0) {
+    //   //  this.feedbackMessages.push(msg_bgl_changes + " which raises you blood glucose level to " + this.bloodGlucose);
+    //     this.feedbackMessages.push("USR MSG: The equation was: BGL = BGL + (carbs in system * 0.25)");
+    //   }
+    //   this.carbsInSystem = 0;
+    //
+    //   // decrease bgl by amount of insulin in system, to a maximum of zero
+    //   var toAbsorb = this.insulinUnitsInSystem * this.bglReferenceUnit();
+    //
+    // //  toAbsorbDiffBGL = this.bloodGlucose - toAbsorb;
+    //   actualAbsorbedInsulin = 0;
+    //
+    //   if (toAbsorbDiffBGL < 0) {
+    //     actualAbsorbedInsulin = this.insulinUnitsInSystem - Math.abs(toAbsorbDiffBGL/this.bglReferenceUnit());
+    //   }
+    //   else {
+    //     actualAbsorbedInsulin = this.insulinUnitsInSystem;
+    //   }
+    // //  this.bloodGlucose -= actualAbsorbedInsulin * this.bglReferenceUnit();
+    //   // -- check level of magic --
+    //
+    //   this.insulinUnitsInSystem -= actualAbsorbedInsulin;
+    //
+    //   if(actualAbsorbedInsulin > 0) {
+    //     this.feedbackMessages.push("USR MSG: " + actualAbsorbedInsulin + " units of insulin were used to process your blood glucose");
+    //     this.feedbackMessages.push("USR MSG: You gained health");
+    //   }else {
+    //     this.feedbackMessages.push("USR MSG: No blood glucose was processed into health.");
+    //   }
+    //
+    //   this.feedbackMessages.push("USR MSG: You have " + this.insulinUnitsInSystem + " insulin in your system");
 
       // we can't have negative blood glucose, it is really just unused (excess) insulin
       // update insulin & blood glucose to show this
@@ -252,18 +231,18 @@ var vue = new Vue({
       return this.configCarbsReferenceUnit * 0.25;
     },
     applySideEffects: function(){
-      if (this.bloodGlucose < this.configMinSafeBGL){
-        this.feedbackMessages.push("USR MSG: Hypoglycemic shock. My player dies without immediate emergency medical intervention.");
-      }
-
-      if (this.bloodGlucose > this.configMaxSafeBGL){
-        if (this.bloodGlucose > this.configCriticalHighBGL) {
-          this.feedbackMessages.push("USR MSG: Diabetic Ketoacidosis Attack (DKA). Without medical intervention my player loses consciousness and will die.");
-        }
-        else {
-          this.feedbackMessages.push("USR MSG: Hyperglycemia. My BGL is too high (> "+ this.configMaxSafeBGL+") not enough insulin! It causes damage to my player health");
-        }
-      }
+      // if (this.bloodGlucose < this.configMinSafeBGL){
+      //   this.feedbackMessages.push("USR MSG: Hypoglycemic shock. My player dies without immediate emergency medical intervention.");
+      // }
+      //
+      // if (this.bloodGlucose > this.configMaxSafeBGL){
+      //   if (this.bloodGlucose > this.configCriticalHighBGL) {
+      //     this.feedbackMessages.push("USR MSG: Diabetic Ketoacidosis Attack (DKA). Without medical intervention my player loses consciousness and will die.");
+      //   }
+      //   else {
+      //     this.feedbackMessages.push("USR MSG: Hyperglycemia. My BGL is too high (> "+ this.configMaxSafeBGL+") not enough insulin! It causes damage to my player health");
+      //   }
+      // }
     },
     clearFeedback: function(){
       this.feedbackMessages = [];
