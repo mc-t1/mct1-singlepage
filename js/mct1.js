@@ -119,7 +119,7 @@ var vue = new Vue({
       if (this.playerBGLValue < NUMBER) {
         //if value is higher then certain playerBGL do otheer stuff
       }
-      
+    
       console.log("In this tick:");
 
       // Absorb carbs
@@ -171,7 +171,13 @@ var vue = new Vue({
           this.playerBGLValue = this.playerBGLValue + (excessCarbs / this.carbsToBGLMagicNumber);
       }
 
-      if (insulinAbsorbed >= insulinNeededToMetaboliseCarbsInBloodstream) { // BGL will be neutral or will drop
+      if (insulinAbsorbed === insulinNeededToMetaboliseCarbsInBloodstream) {
+        if (insulinNeededToMetaboliseCarbsInBloodstream !== 0) {
+          console.log('That was just the right amount!');
+        }
+      }
+
+      if (insulinAbsorbed > insulinNeededToMetaboliseCarbsInBloodstream) { // BGL will be neutral or will drop
         if (this.playerBGLValue < 8) {
           console.log(`I absorbed too much insulin in this tick`);
         }
