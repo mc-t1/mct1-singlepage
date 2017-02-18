@@ -147,7 +147,7 @@ body {
   left: 89px;
   text-align: center;
 }
-#myCanvas {
+.particle-canvas {
   position: absolute;
   width: 100%;
   z-index: 1000;
