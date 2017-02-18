@@ -43,6 +43,7 @@ var Particles = (function(window, document) {
     this.init = function(options) {
       // Setup an event handler for resize events
       window.addEventListener('resize', this.resize.bind(this), false);
+      this.stopped = false;
 
       // Check if options and a selector are specified
       if (options === undefined || !options.selector) {
@@ -74,8 +75,7 @@ var Particles = (function(window, document) {
     /**
      * Calls the draw method 60 times per second.
      */
-    this.animate = function() {
-      this.draw();
+    this.animate = function() {      
       if (this.stopped) {
         // This a request to stop has been called, clear any timeouts 
         // and wipe the storage.
@@ -83,6 +83,7 @@ var Particles = (function(window, document) {
         this.storage = [];
         context.clearRect(0, 0, canvas.width, canvas.height);
       } else {
+        this.draw();
         window.requestAnimFrame(this.animate.bind(this));
       }
     };

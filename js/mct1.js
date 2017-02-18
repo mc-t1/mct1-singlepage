@@ -1,7 +1,16 @@
 
 
+
 //TODO add in checks for max and min values in formula
 // remove tombstone add gameover instead, restart
+
+var connect = new Connect({
+    projectId: '58a83b83ba2ddd08c013f840',
+    apiKey: 'D4494DDA2DE9DE353171F71BD7CC96AF-11501ACE74907B43FE6CEDEA75B63BD55D5C52AE3E187928F2C3DC52340716D6D9A3BFFEE922A938339D38B85EECE8156D9CF11F64503FF994E9FBA125D7DC58'
+});
+var chance = new Chance();
+var uniqueName = chance.first() + chance.integer({min: 0, max: 534532453212322});
+var stats = {name: uniqueName};
 // "use strict";
 var images = [];
 // var chew_audio;
@@ -31,12 +40,12 @@ var vue = new Vue({
       playerInsulinMax: 20,
       playerCarbsInStomach: 0, // current carbs
       playerCarbsMax: 100,
-      playerName:'Billy',
+      playerName: uniqueName,
       playerIsDead: false,
       playerBGLValue: 5, // value
       playerBGLMAX:30,
       playerBGLDisplayMax:20,
-      gameLoopInterval: 8000,
+      gameLoopInterval: 7000,
       gameLoopTimer: null,
       bglisLow:false,
       bglisHigh: false,
@@ -109,6 +118,7 @@ var vue = new Vue({
 
       var carbsAbsorbingIntoBloodstream;
       var insulinAbsorbed;
+      var NUMBER = 0;
 
       //if (this.playerBGLValue > NUMBER) {
         //if value is less then certain playerBGL do stuff
@@ -126,19 +136,22 @@ var vue = new Vue({
           carbsAbsorbingIntoBloodstream = this.playerCarbsInStomach;
       }
 
+      stats.carbsOnBoard = this.playerCarbsInStomach;
+      stats.carbsAbsorption = carbsAbsorbingIntoBloodstream;
       console.log(`I started with ${this.playerCarbsInStomach} grams of carbs in my stomach`);
       console.log(`I am absorbing ${carbsAbsorbingIntoBloodstream} grams of carbs into my bloodstream`);
 
       this.playerCarbsInStomach -= carbsAbsorbingIntoBloodstream;
 
       // Absorb insulin
-
       if (this.playerInsulinInSystem - this.insulinAbsorptionRate > 0) {
           insulinAbsorbed = this.playerInsulinInSystem - this.insulinAbsorptionRate;
       } else {
           insulinAbsorbed = this.playerInsulinInSystem;
       }
 
+      stats.insulinOnboard = this.playerInsulinInSystem;
+      stats.insulinAbsorption = insulinAbsorbed;
       console.log(`I started with ${this.playerInsulinInSystem} units of insulin in my system`);
       console.log(`I am absorbing ${insulinAbsorbed} units of insulin`);
 
@@ -201,6 +214,11 @@ var vue = new Vue({
       else {
         this.stopGameLoop();
       }
+      //console.log(`My BGL is ${BGL}`);
+      stats.BGL = this.playerBGLValue;
+      connect.push('spa-stats-collection', stats);
+
+
 
     },
     eatFood: function(){
