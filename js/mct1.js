@@ -45,7 +45,7 @@ var vue = new Vue({
       playerBGLValue: 5, // value
       playerBGLMAX:30,
       playerBGLDisplayMax:20,
-      gameLoopInterval: 7000,
+      gameLoopInterval: 6000,
       gameLoopTimer: null,
       bglisLow:false,
       bglisHigh: false,
@@ -203,8 +203,12 @@ var vue = new Vue({
           console.log(`I absorbed ${excessInsulin} units above my requirement [*see comment]`);
         }
         console.log(` ${excessInsulin} `);
-
       }
+      console.log(`My BGL is ${this.playerBGLValue}`);
+      stats.BGL = this.playerBGLValue;
+      connect.push('spa-stats-collection', stats);
+
+
       if (this.playerFoodValue > 0) {
         this.playerFoodValue -= 1;
       }
