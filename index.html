@@ -94,13 +94,15 @@
                     <label>Player Carbs: </label>
                     {{carbsInSystem}}
                   </div>
-                  <li class="food-list" v-for="food in foods">
-                    <div class="food-list--img">
-                      <img src
-                    </div>
-                      <p>{{food.name}}</p>
-                    </div>
-                  </li>
+                  <ul class="food-list">
+                    <li v-for="food in foods">
+                      <div class="food-list--img">
+                        <img v-bind:src="food.image"/>
+                      </div>
+                        <p>{{food.name}}</p>
+                      </div>
+                    </li>
+                  </ul>
 
                 </div>
               </div>
