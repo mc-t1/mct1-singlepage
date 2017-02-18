@@ -49,7 +49,7 @@ var vue = new Vue({
       playerBGLValue: 5, // value
       playerBGLMAX:30,
       playerBGLDisplayMax:20,
-      gameLoopInterval: 6000,
+      gameLoopInterval: 2000,
       gameLoopTimer: null,
       bglisLow:false,
       bglisHigh: false,
@@ -345,50 +345,68 @@ var vue = new Vue({
       var lowColor = '#ff0000';
       var highColor = '#00ff00';
       var startObj = {};
+      var flashColor = undefined;
 
       if ((BGL < veryLowBGL) || isNaN(BGL)) {
         startObj = {
-          speed: 2,
+          speed: 5,
           size: 15,
           color: lowColor,
+          number: 300,
         };
+        flashColor = lowColor;
       } else if (BGL < lowBGL) {
         startObj = {
-          speed: 1,
+          speed: 2,
           size: 10,
           color: lowColor,
+          number: 150,
         };
+        flashColor = lowColor;
       } else if (BGL > extremeBGL) {
         startObj = {
-          speed: 2,
+          speed: 5,
           size: 15,
           color: highColor,
+          number: 400,
         };
+        flashColor = highColor;
       } else if (BGL > veryHighBGL) {
         startObj = {
-          speed: 1,
+          speed: 3,
           size: 10,
           color: highColor,
+          number: 300,
         };
+        flashColor = highColor;
       } else if (BGL > highBGL) {
         startObj = {
-          speed: 0.5,
+          speed: 1,
           size: 5,
           color: highColor,
+          number: 100,
         };
+        flashColor = highColor;
       } else {
         stopBGL();
+        flashColor = undefined;
       }
 
       if ((startObj.speed !== this.particlesObject.speed) || 
           (startObj.size !== this.particlesObject.size) ||
           (startObj.color !== this.particlesObject.color)) {
-            console.log("----------------------->NEW DATA");
+            // console.log("----------------------->NEW DATA");
             this.particlesObject = startObj;
-            console.log("----------------------->THE OBJ", this.particlesObject);
-            stopBGL();
+            // console.log("----------------------->THE OBJ", this.particlesObject);
             startBGL(this.particlesObject);
+            this.flashHealth();
       }
+    },
+    flashHealth: function(color) {
+      if (!color) { return }
+
+      console.log('------------------------>Flash Colour: ', color);
+      
     },
   }
 });
