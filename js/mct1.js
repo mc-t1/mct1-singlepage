@@ -114,10 +114,10 @@ var vue = new Vue({
       var toLowBGL = 5;
       var toHighBGL = 10;
       
-      if (this.playerBGLValue > toLowBGL) {
+      if ((this.playerBGLValue < toLowBGL) || isNaN(this.playerBGLValue)) {
         console.log('BGL TOO LOW: ', this.playerBGLValue);
 
-      } else if (this.playerBGLValue < toHighBGL) {
+      } else if (this.playerBGLValue > toHighBGL) {
         console.log('BGL TOO HIGH: ', this.playerBGLValue);
 
       } else {
