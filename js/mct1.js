@@ -64,7 +64,7 @@ var vue = new Vue({
       carbsAbsorptionRate: 2, // how many carbs are absorbed per cycle
       carbsPerInsulinUnit: 7.5, // how many grams of carbs are metabolise per insulin unit
       // Naively match carbs and insulin absorption
-      insulinAbsorptionRate: carbsAbsorptionRate / carbsPerInsulinUnit, // how many units of insulin are absorbed per cycle
+      insulinAbsorptionRate: this.carbsAbsorptionRate / this.carbsPerInsulinUnit, // how many units of insulin are absorbed per cycle
       carbsToHealthMagicNumber: 20, // how many carbs convert to 1 unit of player health when metabolise; 0-20 health range
       BGLCorrectionPerInsulinUnitMagicNumber: 2, // how many BGL points drop per one unit of insulin without carbs
       carbsToBGLMagicNumber: carbsPerInsulinUnit * BGLCorrectionPerInsulinUnitMagicNumber, // how many carbs convert to one point of BGL when unmetabolised
@@ -124,7 +124,7 @@ var vue = new Vue({
 
       var carbsAbsorbingIntoBloodstream;
       var insulinAbsorbed;
-      
+
       this.calculateParticleEffects(this.playerBGLValue);
 
       console.log("In this tick:");
