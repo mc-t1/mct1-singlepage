@@ -54,7 +54,7 @@ var vue = new Vue({
       gameLoopTimer: null,
       bglisLow:false,
       bglisHigh: false,
-      foods : foodList(),
+      foods : foodlist(),
       chew_audio:null,
       drink_audio:null,
       insulineDoseUnits:5,
