@@ -76,6 +76,7 @@ body {
   background-image: url(../img/level_empty.png);
   background-size:523px 16px;
   margin:auto;
+  float:right;
 }
 
 .plr-bgl-bar--overlay {
@@ -85,6 +86,7 @@ body {
   background-image: url(../img/level_full.png);
   background-repeat: none;
   background-size:523px 16px;
+
 }
 
 .plr-insulin-bar {
@@ -93,6 +95,7 @@ body {
   background-image: url(../img/level_empty.png);
   background-size:523px 16px;
   margin:auto;
+  float:right;
 }
 
 .plr-insulin-bar--overlay {
@@ -110,6 +113,7 @@ body {
   background-image: url(../img/level_empty.png);
   background-size:523px 16px;
   margin:auto;
+  float:right;
 }
 
 .plr-carbs-bar--overlay {
@@ -161,7 +165,16 @@ body {
 
 .potion {
   width: 25%;
-  display: inline-block;
+  display:block;
+  margin:auto;
+}
+.potion-title {
+  margin-top:0;
+  text-align: center;
+}
+
+#drinkPotion:hover {
+  cursor:pointer;
 }
 
 .food img, .potion img {
