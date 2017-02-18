@@ -36,6 +36,7 @@ body {
   height: 20px;
   background-image: url(../img/mc_heart_20__empty.png);
   background-repeat: repeat-x;
+  margin:auto;
 }
 
 .plr-health-bar--overlay {
@@ -46,12 +47,17 @@ body {
   background-repeat: repeat-x;
 }
 
+#plr-food-value, #plr-hearts-value {
+  text-align: center;
+}
+
 .plr-hunger-bar {
   width: 200px;
   height: 20px;
   background-image: url(../img/empty_hunger.png);
   background-repeat: repeat-x;
   background-size:20px 20px;
+  margin:auto;
 }
 
 .plr-hunger-bar--overlay {
@@ -64,20 +70,20 @@ body {
 }
 
 .plr-bgl-bar {
-  width: 200px;
-  height: 5.7px;
+  width: 523px;
+  height:  16px;
   background-image: url(../img/level_empty.png);
-  background-size:200px 5.7px;
+  background-size:523px 16px;
+  margin:auto;
 }
 
 .plr-bgl-bar--overlay {
   position: absolute;
-  width: 200px;
-  height:  5.7px;
+  width: 523px;
+  height:  16px;
   background-image: url(../img/level_canCast.png);
   background-repeat: none;
-  background-size:200px 5.7px;
-  max-width: 200px;
+  background-size:523px 16px;
 }
 
 .plr-bgl-bar--overlay.bglLow {

@@ -42,23 +42,12 @@ var vue = new Vue({
       gameLoopTimer: null,
       bglisLow:false,
       bglisHigh: false,
-      foods :{
-        "apple" : {
-          'foodValue' : '10',
-          'carbsValue' : '2',
-          'image':'Apple2.png'
-        },
-        "carrot" : {
-          'foodValue' : '5',
-          'carbsValue' : '5',
-          'image':'Carrot.png'
-        }
-      }
+      foods : foodList()
     };
   },
   created: function(){
     this.startGameLoop();
-    console.log(this.foods['apple']['foodValue']);
+    console.log(this.foods);
   },
   methods: {
     chewFood: function () {
