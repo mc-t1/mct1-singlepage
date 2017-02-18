@@ -107,6 +107,7 @@ var vue = new Vue({
 
       var carbsAbsorbingIntoBloodstream;
       var insulinAbsorbed;
+      var NUMBER = 0;
 
       if (this.playerBGLValue > NUMBER) {
         //if value is less then certain playerBGL do stuff
