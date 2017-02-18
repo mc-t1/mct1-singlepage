@@ -118,15 +118,20 @@ var vue = new Vue({
 
       var carbsAbsorbingIntoBloodstream;
       var insulinAbsorbed;
-      var NUMBER = 0;
+      var toLowBGL = 5;
+      var toHighBGL = 10;
 
-      //if (this.playerBGLValue > NUMBER) {
-        //if value is less then certain playerBGL do stuff
-    //  }
-    //  if (this.playerBGLValue < NUMBER) {
-        //if value is higher then certain playerBGL do otheer stuff
-  //    }
+      if (this.playerBGLValue > toLowBGL) {
+        console.log('BGL TOO LOW: ', this.playerBGLValue);
 
+      } else if (this.playerBGLValue < toHighBGL) {
+        console.log('BGL TOO HIGH: ', this.playerBGLValue);
+
+      } else {
+        console.log('BGL NORMAL: ', this.playerBGLValue);
+
+      }
+      
       console.log("In this tick:");
 
       // Absorb carbs
