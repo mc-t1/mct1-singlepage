@@ -17,6 +17,7 @@
 }
 body {
   background-color: #999;
+  position: relative;
 }
 #heart-nav {
   background-image: url("../img/Heart.svg");
@@ -145,6 +146,11 @@ body {
   top: 21px;
   left: 89px;
   text-align: center;
+}
+#myCanvas {
+  position: absolute;
+  width: 100%;
+  z-index: 1000;
 }
 
 .food {
