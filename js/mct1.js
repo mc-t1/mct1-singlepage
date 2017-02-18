@@ -72,9 +72,6 @@ var vue = new Vue({
   created: function(){
     this.startGameLoop();
   },
-  mounted: function() {
-    startPart();
-  },
   methods: {
     chewFood: function (food) {
       this.currentFood = food;
