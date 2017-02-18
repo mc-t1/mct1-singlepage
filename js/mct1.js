@@ -4,7 +4,6 @@ var connect = new Connect({
     projectId: '58a83b83ba2ddd08c013f840',
     apiKey: 'D4494DDA2DE9DE353171F71BD7CC96AF-11501ACE74907B43FE6CEDEA75B63BD55D5C52AE3E187928F2C3DC52340716D6D9A3BFFEE922A938339D38B85EECE8156D9CF11F64503FF994E9FBA125D7DC58'
 });
-var Chance = require('chance');
 var chance = new Chance();
 var uniqueName = chance.first() + chance.integer({min: 0, max: 534532453212322});
 var stats = {name: uniqueName};
