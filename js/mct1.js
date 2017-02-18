@@ -59,6 +59,9 @@ var vue = new Vue({
     this.startGameLoop();
     console.log(this.foods);
   },
+  mounted: function() {
+    startPart();
+  },
   methods: {
     chewFood: function () {
       if (this.chew_audio != null) {
