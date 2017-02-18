@@ -60,7 +60,7 @@
                     <label> Player BGL: </label>
                     <div class="plr-bgl-bar">
                       <div class="plr-bgl-bar--overlay"
-                        v-bind:style="{  width: (playerFoodValue/20)*523 + 'px'}"></div>
+                        v-bind:style="{  width: (playerBGLValue/20)*523 + 'px'}"></div>
                     </div>
                     <!-- v-bind:class="{bgl-low: bglisLow, bgl-high: bglisHigh, bgl-crit-high: bglisCritHigh}"
                     {{playerFoodValue}}/{{playerFoodMax}} -->
@@ -79,7 +79,7 @@
                     <label> Player Carbs: </label>
                     <div class="plr-carbs-bar">
                       <div class="plr-carbs-bar--overlay"
-                         v-bind:style="{  width: (playerCarbsValue/20)*523 + 'px'}"></div>
+                         v-bind:style="{  width: (playerCarbsValue/100)*523 + 'px'}"></div>
                     </div>
                     <!-- v-bind:class="{bgl-low: bglisLow, bgl-high: bglisHigh, bgl-crit-high: bglisCritHigh}"
                     {{playerFoodValue}}/{{playerFoodMax}} -->
@@ -90,12 +90,8 @@
                     <label>Player Insulin: </label>
                     {{insulinUnitsInSystem}}
                   </div>
-                  <div id="plr-carbs" style="display: block;">
-                    <label>Player Carbs: </label>
-                    {{carbsInSystem}}
-                  </div>
                   <ul class="food-list">
-                    <li v-for="food in foods" v-on:mousedown="chewFood(food.restoration)" v-on:mouseup="stopChew">
+                    <li v-for="food in foods" v-on:mousedown="chewFood(food)" v-on:mouseup="stopChew">
                       <div class="food-list--img"  v-bind:style="{ backgroundImage: 'url('+food.image+')' }">
                       </div>
                         <p>{{food.name}}</p>

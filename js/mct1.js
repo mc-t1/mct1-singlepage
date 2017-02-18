@@ -35,6 +35,7 @@ var vue = new Vue({
       insulinUnits: 1,
       insulinUnitsInSystem: 0,
       carbsInSystem: 0,
+      currentFood: null,
       feedbackMessages: [],
       playerHeartsValue: 20,
       playerHeartsMax: 20,
@@ -42,10 +43,12 @@ var vue = new Vue({
       playerFoodMax: 20,
       playerInsulinValue: 20,
       playerInsulinMax: 20,
-      playerCarbsValue: 20,
-      playerCarbsMax: 20,
+      playerCarbsValue: 0,
+      playerCarbsMax: 100,
       playerName:'Billy',
       playerIsDead: false,
+      playerBGLValue: 5,
+      playerBGLMAX:20,
       gameLoopInterval: 2000,
       gameLoopTimer: null,
       bglisLow:false,
@@ -62,7 +65,7 @@ var vue = new Vue({
   },
   methods: {
     chewFood: function (food) {
-      this.currentFoodValue = food;
+      this.currentFood = food;
       if (this.chew_audio != null) {
         this.chew_audio.pause();
         this.chew_audio.currentTime = 0;
@@ -122,6 +125,19 @@ var vue = new Vue({
       this.carbsInSystem += this.foodValue * this.foodUnits;
       this.feedbackMessages.push("CMD RUN: /t1 eat " + this.foodUnits + " " + dummyCarbsMap[this.foodValue.toString()]);
       this.feedbackMessages.push("USR MSG: you ate " + this.foodUnits + " pieces of " + dummyCarbsMap[this.foodValue.toString()]);
+      var newFoodValue = parseInt(this.playerFoodValue) + parseInt(this.currentFood.restoration);
+      if (newFoodValue > 20) {
+        this.playerFoodValue = 20;
+      } else {
+        this.playerFoodValue = newFoodValue;
+      }
+
+      var newCarbValue = parseInt(this.playerCarbsValue) + parseInt(this.currentFood.carbs);
+      if (newCarbValue > 100) {
+        this.playerCarbsValue = 100;
+      } else {
+        this.playerCarbsValue = newCarbValue;
+      }
       this.updateSimpleModel();
     },
     takeInsulin: function(){
@@ -136,14 +152,10 @@ var vue = new Vue({
     },
     updateSimpleModel: function(){
       // increase bgl
-      var newFoodValue = parseInt(this.playerFoodValue) + parseInt(this.currentFoodValue);
+
       console.log(this.playerFoodValue);
       console.log(this.currentFoodValue);
-      if (newFoodValue > 20) {
-        this.playerFoodValue = 20;
-      } else {
-        this.playerFoodValue = newFoodValue;
-      }
+
       msg_bgl_changes = "USR MSG: Your stomach digests " + this.carbsInSystem;
       this.bloodGlucose += (
           this.carbsInSystem * 0.25
