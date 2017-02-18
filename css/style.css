@@ -81,18 +81,45 @@ body {
   position: absolute;
   width: 523px;
   height:  16px;
+  background-image: url(../img/level_full.png);
+  background-repeat: none;
+  background-size:523px 16px;
+}
+
+.plr-insulin-bar {
+  width: 523px;
+  height:  16px;
+  background-image: url(../img/level_empty.png);
+  background-size:523px 16px;
+  margin:auto;
+}
+
+.plr-insulin-bar--overlay {
+  position: absolute;
+  width: 523px;
+  height:  16px;
   background-image: url(../img/level_canCast.png);
   background-repeat: none;
   background-size:523px 16px;
 }
 
-.plr-bgl-bar--overlay.bglLow {
-  background-image: url(../img/low_energy.png);
+.plr-carbs-bar {
+  width: 523px;
+  height:  16px;
+  background-image: url(../img/level_empty.png);
+  background-size:523px 16px;
+  margin:auto;
 }
 
-.plr-bgl-bar--overlay.bglHigh {
-  background-image: url(../img/level_full.png);
+.plr-carbs-bar--overlay {
+  position: absolute;
+  width: 523px;
+  height:  16px;
+  background-image: url(../img/low_energy.png);
+  background-repeat: none;
+  background-size:523px 16px;
 }
+
 
 
 
