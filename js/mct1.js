@@ -1,6 +1,7 @@
 
 
-
+//TODO add in checks for max and min values in formula
+// remove tombstone add gameover instead, restart
 // "use strict";
 var images = [];
 // var chew_audio;
@@ -35,7 +36,7 @@ var vue = new Vue({
       playerBGLValue: 5, // value
       playerBGLMAX:30,
       playerBGLDisplayMax:20,
-      gameLoopInterval: 5000,
+      gameLoopInterval: 8000,
       gameLoopTimer: null,
       bglisLow:false,
       bglisHigh: false,
@@ -52,6 +53,7 @@ var vue = new Vue({
       carbsToHealthMagicNumber: 20, // how many carbs convert to 1 unit of player health when metabolise; 0-20 health range
       carbsToBGLMagicNumber:8, // how many carbs convert to one point of BGL when unmetabolised
       BGLCorrectionPerInsulinUnitMagicNumber: 2, // how many BGL points drop per one unit of insulin without carbs
+      carbsToEnergyHealthNumber: 1
     };
   },
   created: function(){
@@ -108,13 +110,13 @@ var vue = new Vue({
       var carbsAbsorbingIntoBloodstream;
       var insulinAbsorbed;
 
-      if (this.playerBGLValue > NUMBER) {
+      //if (this.playerBGLValue > NUMBER) {
         //if value is less then certain playerBGL do stuff
-      }
-      if (this.playerBGLValue < NUMBER) {
+    //  }
+    //  if (this.playerBGLValue < NUMBER) {
         //if value is higher then certain playerBGL do otheer stuff
-      }
-      
+  //    }
+
       console.log("In this tick:");
 
       // Absorb carbs
@@ -167,16 +169,28 @@ var vue = new Vue({
         if (this.playerBGLValue < 8) {
           console.log(`I absorbed too much insulin in this tick`);
         }
+        console.log(`I have  ${carbsAbsorbingIntoBloodstream} ${this.carbsToEnergyHealthNumber}`);
         var carbsConvertedToHealth = carbsAbsorbingIntoBloodstream * this.carbsToEnergyHealthNumber;
+
         var excessInsulin = insulinAbsorbed - (carbsConvertedToHealth / this.carbsPerInsulinUnit);
         this.playerHeartsValue += carbsConvertedToHealth;
-        this.playerBGLValue -= (excessInsulin * this.BGLCorrectionPerInsulinUnitMagicNumber);
+        console.log(this.playerBGLValue);
+        var newBGLValue = this.playerBGLValue - (excessInsulin * this.BGLCorrectionPerInsulinUnitMagicNumber);
+        if (newBGLValue <= 0) {
+          this.playerBGLValue = 0;
+        } else {
+          this.playerBGLValue = newBGLValue;
+        }
+        console.log(this.playerBGLValue);
+
         if (this.playerBGLValue < 4) {
           // This is naive - a portion of this "excess Insulin" may in fact be a correction dose
           // To get this part right requires discounting the excessInsulin (insulin above carb absorption)
           // for any correction effect on high BGL, then reporting the difference
           console.log(`I absorbed ${excessInsulin} units above my requirement [*see comment]`);
         }
+        console.log(` ${excessInsulin} `);
+
       }
       if (this.playerFoodValue > 0) {
         this.playerFoodValue -= 1;
