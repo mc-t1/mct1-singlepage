@@ -16,6 +16,14 @@ function foodList() {
         'saturatedRatio' : 1.2,
         'carbs' : 15,
         'image':'./img/food/Carrot.png',
+      },
+      backed_potato: {
+        'name': 'Baked Potato',
+        'restoration' : 5,
+        'saturatedRestore' : 6,
+        'saturatedRatio': 1.2,
+        'carbs': 21,
+        'image': './img/food/Baked_Potato.png',
       }
     }
   }
