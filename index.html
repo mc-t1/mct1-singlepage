@@ -96,8 +96,7 @@
                   </div>
                   <ul class="food-list">
                     <li v-for="food in foods" v-on:mousedown="chewFood()" v-on:mouseup="stopChew">
-                      <div class="food-list--img">
-                        <img v-bind:src="food.image"/>
+                      <div class="food-list--img"  v-bind:style="{ backgroundImage: 'url('+food.image+')' }">
                       </div>
                         <p>{{food.name}}</p>
                       </div>
@@ -122,7 +121,7 @@
                 <img src="./img/foods.png" width="300"/>
               </div>
 
-              <div class="potion" v-on:click="slurpPotion">
+              <div class="potion" v-on:mousedown="slurpPotion" v-on:mouseup="stopSlurp">
                 <img src="./img/potion_of_swiftness.png" width="100"/>
               </div>
 

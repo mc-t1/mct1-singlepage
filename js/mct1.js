@@ -68,10 +68,11 @@ var vue = new Vue({
 
       var rand = Math.floor((Math.random() * 2) + 1);
        this.chew_audio = new Audio('./mp3/minecraft_chewing_'+rand+'.mp3');
+       console.log(new Audio('./mp3/minecraft_chewing_'+rand+'.mp3').duration)
 
       this.chew_audio.play();
 
-      complete_chew_tid = setTimeout(this.eatFood, 2000);
+      complete_chew_tid = setTimeout(this.eatFood, 1541.224);
 
     },
     slurpPotion: function () {
@@ -81,8 +82,10 @@ var vue = new Vue({
       }
       this.drink_audio = new Audio('./mp3/minecraft_drinking_potion_1.mp3');
       this.drink_audio.play();
+      complete_drink_tid = setTimeout(this.takeInsulin, 1671.837)
     },
     stopSlurp: function() {
+      console.log(this.drink_audio.duration);
       if (!this.drink_audio.ended) {
         clearInterval(complete_drink_tid);
       }
@@ -90,6 +93,7 @@ var vue = new Vue({
       this.drink_audio.currentTime = 0;
     },
     stopChew : function() {
+      console.log(this.chew_audio.duration)
       if (!this.chew_audio.ended) {
         clearInterval(complete_chew_tid);
       }

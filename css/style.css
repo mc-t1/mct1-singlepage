@@ -172,6 +172,16 @@ padding:0;
 .food-list li {
   background:gray;
   border:2px solid white;
+  width:100px;
+  height:100px;
+  text-align: center;
+}
+
+.food-list li .food-list--img {
+  background-size: 75px 75px;
+  height:75px;
+  width:75px;
+  margin:auto;
 }
 
 .food-list li:hover {
