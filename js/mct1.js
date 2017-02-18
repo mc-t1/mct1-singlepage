@@ -144,19 +144,32 @@ var vue = new Vue({
       // Calculate and apply insulin and carbs interaction to health
 
       if (insulinAbsorbed < insulinNeededToMetaboliseCarbsInBloodstream) { // BGL will rise
-          console.log(`I didn't take absorb enough insulin`);
+          if (this.playerInsulinInSystem === 0) {
+            console.log(`I didn't take enough insulin`);
+          } else {
+            console.log(`I didn't absorb enough insulin`);
+          }
           var carbsConvertedToHealth = this.carbsPerInsulinUnit * insulinAbsorbed;
           var excessCarbs = carbsAbsorbingIntoBloodstream - carbsConvertedToHealth;
+          console.log(`I have ${excessCarbs} in my bloodstream now`);
           this.playerHeartsValue += carbsConvertedToHealth / this.carbsToHealthMagicNumber;
           this.playerBGLValue = this.playerBGLValue + (excessCarbs / this.carbsToBGLMagicNumber);
       }
 
       if (insulinAbsorbed >= insulinNeededToMetaboliseCarbsInBloodstream) { // BGL will be neutral or will drop
+        if (this.playerBGLValue < 8) {
+          console.log(`I absorbed too much insulin in this tick`);
+        }
         var carbsConvertedToHealth = carbsAbsorbingIntoBloodstream * this.carbsToEnergyHealthNumber;
         var excessInsulin = insulinAbsorbed - (carbsConvertedToHealth / this.carbsPerInsulinUnit);
-
         this.playerHeartsValue += carbsConvertedToHealth;
         this.playerBGLValue -= (excessInsulin * this.BGLCorrectionPerInsulinUnitMagicNumber);
+        if (this.playerBGLValue < 4) {
+          // This is naive - a portion of this "excess Insulin" may in fact be a correction dose
+          // To get this part right requires discounting the excessInsulin (insulin above carb absorption)
+          // for any correction effect on high BGL, then reporting the difference
+          console.log(`I absorbed ${excessInsulin} units above my requirement [*see comment]`);
+        }
       }
       if (this.playerFoodValue > 0) {
         this.playerFoodValue -= 1;
