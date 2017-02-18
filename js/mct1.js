@@ -56,7 +56,7 @@ var vue = new Vue({
       currentFoodValue: 0,
 
       //modaled info
-      carbsAbsorptionRate:2, // how many carbs are absorbed per cycle
+      carbsAbsorptionRate: 2, // how many carbs are absorbed per cycle
       insulinAbsorptionRate:0.5, // how many units of insulin are absorbed per cycle
       carbsPerInsulinUnit:15, // how many grams of carbs are metabolise per insulin unit
       carbsToHealthMagicNumber: 20, // how many carbs convert to 1 unit of player health when metabolise; 0-20 health range
@@ -136,7 +136,7 @@ var vue = new Vue({
 
       // Absorb carbs
       if (this.playerCarbsInStomach - this.carbsAbsorptionRate > 0) {
-          carbsAbsorbingIntoBloodstream = this.playerCarbsInStomach - this.carbsAbsorptionRate;
+          carbsAbsorbingIntoBloodstream = this.carbsAbsorptionRate;
       } else {
           carbsAbsorbingIntoBloodstream = this.playerCarbsInStomach;
       }
@@ -193,7 +193,7 @@ var vue = new Vue({
         if (this.playerBGLValue < 8) {
           console.log(`I absorbed too much insulin in this tick`);
         }
-        console.log(`I have  ${carbsAbsorbingIntoBloodstream} ${this.carbsToEnergyHealthNumber}`);
+        console.log(`I have ${carbsAbsorbingIntoBloodstream} grams of carbs in my bloodstream`);
         var carbsConvertedToHealth = carbsAbsorbingIntoBloodstream * this.carbsToEnergyHealthNumber;
 
         var excessInsulin = insulinAbsorbed - (carbsConvertedToHealth / this.carbsPerInsulinUnit);
