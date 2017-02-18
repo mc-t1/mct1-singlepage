@@ -1,15 +1,17 @@
 
 function foodList() {
   return {
-      "apple" : {
+      1 : {
         'foodValue' : '10',
         'carbsValue' : '2',
-        'image':'Apple2.png'
+        'image':'Apple2.png',
+        'name':'Apple'
       },
-      "carrot" : {
+      2 : {
         'foodValue' : '5',
         'carbsValue' : '5',
-        'image':'Carrot.png'
+        'image':'Carrot.png',
+        'name':'Carrot'
       }
     }
   }
