@@ -9,8 +9,11 @@ function startBGL(options) {
     };
 
     var setOptions = options || defaults;
+    var numberOfParticles = 0;
 
-    Particles.init( setOptions );
+    if (Particles && Particles.storage && (Particles.storage.length === numberOfParticles)) {
+        Particles.init( setOptions ); 
+    }
 };
 
 function stopBGL() {
