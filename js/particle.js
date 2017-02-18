@@ -1,19 +1,30 @@
 function startBGL(options) {
-    var defaults = {
+    var speed = options.speed || undefined;
+    var size = options.size || undefined;
+    var color = options.color || undefined;
+
+    // If no values return
+    if (!speed || !size || !color) { return }
+
+    console.log(`Speed: ${speed} Size: ${size} Color: ${color}`);
+
+    var options = {
         selector: '#myCanvas',
-        color: '#0f9976',
-        connectParticles: false,
-        sizeVariations: 5,
-        speed: 0.5,
+        color: color,
+        sizeVariations: size,
+        speed: speed,
         maxParticles: 100,
     };
 
-    var setOptions = options || defaults;
-    var numberOfParticles = 0;
-
-    if (Particles && Particles.storage && (Particles.storage.length === numberOfParticles)) {
-        Particles.init( setOptions ); 
-    }
+    Particles.stop();
+    setTimeout(function() {
+        Particles.init( options ); 
+    }, 70)
+    
+    // var numberOfParticles = 0;
+    // if (Particles && Particles.storage && (Particles.storage.length === numberOfParticles)) {
+    //     Particles.init( options ); 
+    // }
 };
 
 function stopBGL() {
