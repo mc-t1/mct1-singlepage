@@ -118,14 +118,14 @@ var vue = new Vue({
 
       var carbsAbsorbingIntoBloodstream;
       var insulinAbsorbed;
-      var toLowBGL = 5;
-      var toHighBGL = 10;
+      var lowerBoundHealthyBGL = 4;
+      var upperBoundHealthyBGL = 7;
       
-      if ((this.playerBGLValue < toLowBGL) || isNaN(this.playerBGLValue)) {
-        console.log('BGL TOO LOW: ', this.playerBGLValue);
+      if ((this.playerBGLValue < lowerBoundHealthyBGL) || isNaN(this.playerBGLValue)) {
+        console.log('BGL too low: ', this.playerBGLValue);
 
-      } else if (this.playerBGLValue > toHighBGL) {
-        console.log('BGL TOO HIGH: ', this.playerBGLValue);
+      } else if (this.playerBGLValue > upperBoundHealthyBGL) {
+        console.log('BGL too high: ', this.playerBGLValue);
 
       } else {
         console.log('BGL NORMAL: ', this.playerBGLValue);
