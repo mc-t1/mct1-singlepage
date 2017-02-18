@@ -81,6 +81,7 @@ var Particles = (function(window, document) {
         // and wipe the storage.
         clearTimeout();
         this.storage = [];
+        context.clearRect(0, 0, canvas.width, canvas.height);
       } else {
         window.requestAnimFrame(this.animate.bind(this));
       }
