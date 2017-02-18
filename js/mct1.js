@@ -8,6 +8,10 @@ var connect = new Connect({
     projectId: '58a83b83ba2ddd08c013f840',
     apiKey: 'D4494DDA2DE9DE353171F71BD7CC96AF-11501ACE74907B43FE6CEDEA75B63BD55D5C52AE3E187928F2C3DC52340716D6D9A3BFFEE922A938339D38B85EECE8156D9CF11F64503FF994E9FBA125D7DC58'
 });
+var connectQuery = new Connect({
+  projectId: '58a83b83ba2ddd08c013f840',  
+  apiKey: 'CF7C99D4FB11862B555778CC87A818C3-1D6DE9BA652EB82CBD237E56EC439448980641BD2C3E246133C08F75DEF66B946DFB917DF7E99CEF8E43C175E93EDDBEFC066DB6C834ABF07284D45782ABBD2C'
+})
 var chance = new Chance();
 var uniqueName = chance.first() + '-' + chance.integer({min: 0, max: 100000});
 var stats = {name: uniqueName};
@@ -36,9 +40,9 @@ var vue = new Vue({
       playerHeartsMax: 20,
       playerFoodValue: 20,
       playerFoodMax: 20,
-      playerInsulinInSystem: 0,
+      playerInsulinInSystem: 4,
       playerInsulinMax: 20,
-      playerCarbsInStomach: 0, // current carbs
+      playerCarbsInStomach: 10, // current carbs
       playerCarbsMax: 100,
       playerName: uniqueName,
       playerIsDead: false,
@@ -219,7 +223,6 @@ var vue = new Vue({
       stats.BGL = this.playerBGLValue;
       connect.push('spa-stats-collection', stats);
 
-
       if (this.playerFoodValue > 0) {
         this.playerFoodValue -= 1;
       }
@@ -233,7 +236,21 @@ var vue = new Vue({
       stats.BGL = this.playerBGLValue;
       connect.push('spa-stats-collection', stats);
 
-
+    connectQuery.query("spa-stats-collection")
+    .select({"BGL": "BGL"})
+    .filter({
+        "name": this.playerName
+    })
+    .execute()
+    .then(function(result) {
+        // Handle the result
+        var chart = Connect.visualize(query)
+        .as('chart')
+        .inside('#chart')
+        .draw();
+    }, function(error) {
+      console.log(error);
+    });
 
     },
     eatFood: function(){
