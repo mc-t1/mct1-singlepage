@@ -58,6 +58,7 @@ var vue = new Vue({
       drink_audio:null,
       insulineDoseUnits:5,
       currentFoodValue: 0,
+      particlesObject: {speed: 0, size: 0, color: ''},
 
       //modaled info
       carbsAbsorptionRate: 2, // how many carbs are absorbed per cycle
@@ -123,19 +124,8 @@ var vue = new Vue({
 
       var carbsAbsorbingIntoBloodstream;
       var insulinAbsorbed;
-      var lowerBoundHealthyBGL = 4;
-      var upperBoundHealthyBGL = 7;
-
-      if ((this.playerBGLValue < lowerBoundHealthyBGL) || isNaN(this.playerBGLValue)) {
-        console.log('BGL too low: ', this.playerBGLValue);
-
-      } else if (this.playerBGLValue > upperBoundHealthyBGL) {
-        console.log('BGL too high: ', this.playerBGLValue);
-
-      } else {
-        console.log('BGL NORMAL: ', this.playerBGLValue);
-
-      }
+      
+      this.calculateParticleEffects(this.playerBGLValue);
 
       console.log("In this tick:");
 
@@ -236,8 +226,6 @@ var vue = new Vue({
         console.log(` ${excessInsulin} `);
       }
       console.log(`My BGL is ${this.playerBGLValue}`);
-      stats.BGL = this.playerBGLValue;
-      connect.push('spa-stats-collection', stats);
 
       if (this.playerFoodValue > 0) {
         this.playerFoodValue -= 1;
@@ -248,32 +236,36 @@ var vue = new Vue({
       else {
         this.stopGameLoop();
       }
-      //console.log(`My BGL is ${BGL}`);
+
+      /**
+       *  GetConnect.io stats and visualization
+       * */
+
       stats.BGL = this.playerBGLValue;
       connect.push('spa-stats-collection', stats);
 
-    connectQuery.query("spa-stats-collection")
-    .select({"sum": "BGL"})
-    .filter({
-        "name": this.playerName
-    })
-    .execute()
-    .then(function(result) {
-        // Handle the result
-        console.log(result);
-    }, function(error) {
-      console.log(error);
-    });
+      connectQuery.query("spa-stats-collection")
+      .select({"sum": "BGL"})
+      .filter({
+          "name": this.playerName
+      })
+      .execute()
+      .then(function(result) {
+          // Handle the result
+          console.log(result);
+      }, function(error) {
+        console.log(error);
+      });
 
-    var chart = Connect.visualize(connectQuery)
-    .as('chart')
-    .inside('#chart')
-    .with({
-      chart: {
-        type: "bar"
-      }
-    })
-    .draw();
+      var chart = Connect.visualize(connectQuery)
+      .as('chart')
+      .inside('#chart')
+      .with({
+        chart: {
+          type: "bar"
+        }
+      })
+      .draw();
 
     },
     eatFood: function(){
@@ -368,6 +360,60 @@ var vue = new Vue({
     },
     clearFeedback: function(){
       this.feedbackMessages = [];
-    }
+    },
+    calculateParticleEffects: function(BGL) {
+      var veryLowBGL = 2;
+      var lowBGL = 4;
+      var highBGL = 10;
+      var veryHighBGL = 13;
+      var extremeBGL = 15;
+      var lowColor = '#ff0000';
+      var highColor = '#00ff00';
+      var startObj = {};
+
+      if ((BGL < veryLowBGL) || isNaN(BGL)) {
+        startObj = {
+          speed: 2,
+          size: 15,
+          color: lowColor,
+        };
+      } else if (BGL < lowBGL) {
+        startObj = {
+          speed: 1,
+          size: 10,
+          color: lowColor,
+        };
+      } else if (BGL > extremeBGL) {
+        startObj = {
+          speed: 2,
+          size: 15,
+          color: highColor,
+        };
+      } else if (BGL > veryHighBGL) {
+        startObj = {
+          speed: 1,
+          size: 10,
+          color: highColor,
+        };
+      } else if (BGL > highBGL) {
+        startObj = {
+          speed: 0.5,
+          size: 5,
+          color: highColor,
+        };
+      } else {
+        stopBGL();
+      }
+
+      if ((startObj.speed !== this.particlesObject.speed) || 
+          (startObj.size !== this.particlesObject.size) ||
+          (startObj.color !== this.particlesObject.color)) {
+            console.log("----------------------->NEW DATA");
+            this.particlesObject = startObj;
+            console.log("----------------------->THE OBJ", this.particlesObject);
+            stopBGL();
+            startBGL(this.particlesObject);
+      }
+    },
   }
 });
