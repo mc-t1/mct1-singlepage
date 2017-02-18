@@ -172,6 +172,7 @@ body {
   list-style-type: none;
 text-align: center;
 display: flex;
+flex-wrap: wrap;
 border:1px solid black;
 padding:0;
 }
@@ -180,7 +181,8 @@ padding:0;
   background:gray;
   border:2px solid white;
   width:100px;
-  height:100px;
+  height:130px;
+  padding:3px;
   text-align: center;
 }
 

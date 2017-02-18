@@ -67,7 +67,7 @@
                     <label> Player Insulin: </label>
                     <div class="plr-insulin-bar">
                       <div class="plr-insulin-bar--overlay"
-                         v-bind:style="{  width: (playerInsulinValue/20)*523 + 'px'}"></div>
+                         v-bind:style="{  width: (playerInsulinInSystem/20)*523 + 'px'}"></div>
                     </div>
                     <!-- v-bind:class="{bgl-low: bglisLow, bgl-high: bglisHigh, bgl-crit-high: bglisCritHigh}"
                     {{playerFoodValue}}/{{playerFoodMax}} -->
@@ -76,7 +76,7 @@
                     <label> Player Carbs: </label>
                     <div class="plr-carbs-bar">
                       <div class="plr-carbs-bar--overlay"
-                         v-bind:style="{  width: (playerCarbsValue/100)*523 + 'px'}"></div>
+                         v-bind:style="{  width: (playerCarbsInStomach/100)*523 + 'px'}"></div>
                     </div>
                     <!-- v-bind:class="{bgl-low: bglisLow, bgl-high: bglisHigh, bgl-crit-high: bglisCritHigh}"
                     {{playerFoodValue}}/{{playerFoodMax}} -->

@@ -2,7 +2,7 @@
 // restoration: hunger points restored
 // saturatedRestore: saturation points restored
 // saturatedRatio: ratio or saturation and hunger
-// carbs - estimated internet derived 
+// carbs - estimated internet derived
 
 function foodlist() {
   return {
@@ -20,7 +20,7 @@ function foodlist() {
       'saturatedRestore' : 2.4,
       'saturatedRatio' : 1.2,
       'carbs': 21,
-      'image':'../img/food/Baked_Potato.png'
+      'image':'./img/food/Baked_Potato.png'
     },
     beetroot: {
       'name':'Beetroot',
@@ -28,7 +28,7 @@ function foodlist() {
       'saturatedRestore' : 1.2,
       'saturatedRatio' : 1.2,
       'carbs': 10,
-      'image':'../img/food/Beetroot.png'
+      'image':'./img/food/Beetroot.png'
     },
     beetrootSoup: {
       'name':'Beetroot Soup',
@@ -36,7 +36,7 @@ function foodlist() {
       'saturatedRestore' : 1.2,
       'saturatedRatio' : 1.2,
       'carbs': 10,
-      'image':'../img/food/Beetroot.png'
+      'image':'./img/food/Beetroot.png'
     },
     bread: {
       'name':'Beetroot Soup',
@@ -44,7 +44,7 @@ function foodlist() {
       'saturatedRestore' : 6,
       'saturatedRatio' : 1.2,
       'carbs': 12,
-      'image':'../img/food/Bread2.png'
+      'image':'./img/food/Bread2.png'
     },
     cakeSlice: {
       // TODO: image required
@@ -53,7 +53,7 @@ function foodlist() {
       'saturatedRestore' : 0.4,
       'saturatedRatio' : 0.2,
       'carbs': 35,
-      'image':'../img/food/Cake_Whole.png'
+      'image':'./img/food/Cake_Whole.png'
     },
     cakeWhole: {
       // TODO: image required
@@ -62,7 +62,7 @@ function foodlist() {
       'saturatedRestore' : 2.8,
       'saturatedRatio' : 0.2,
       'carbs': 300,
-      'image':'../img/food/Cake_Whole.png'
+      'image':'./img/food/Cake_Whole.png'
     },
     carrot : {
       'name':'Carrot',
@@ -77,7 +77,7 @@ function foodlist() {
       'restoration' : 6,
       'saturatedRestore' : 7.2,
       'saturatedRatio' : 1.2,
-      'image':'../img/food/Cookedchicken.png'
+      'image':'./img/food/Cookedchicken.png'
     },
     cookedMutton: {
       'name':'Cooked Mutton',
@@ -85,7 +85,7 @@ function foodlist() {
       'saturatedRestore' : 9.6,
       'saturatedRatio' : 1.6,
       'carbs' : 0,
-      'image':'../img/food/Cooked_Mutton.png'
+      'image':'./img/food/Cooked_Mutton.png'
     },
     cookedPorkchop: {
       'name':'Cooked Porkchop',
@@ -93,7 +93,7 @@ function foodlist() {
       'saturatedRestore' : 12.8,
       'saturatedRatio' : 1.6,
       'carbs' : 0,
-      'image':'../img/food/Cooked_Porkchop.png'
+      'image':'./img/food/Cooked_Porkchop.png'
     },
     cookedRabbit: {
       'name':'Cooked Rabbit',
@@ -101,7 +101,7 @@ function foodlist() {
       'saturatedRestore' : 12.8,
       'saturatedRatio' : 1.6,
       'carbs' : 0,
-      'image':'../img/food/Cooked_Rabbit.png'
+      'image':'./img/food/Cooked_Rabbit.png'
     },
     cookedSalmon: {
       'name':'Cooked Salmon',
@@ -109,7 +109,7 @@ function foodlist() {
       'saturatedRestore' : 9.6,
       'saturatedRatio' : 1.6,
       'carbs' : 0,
-      'image':'../img/food/Cooked_Salmon.png'
+      'image':'./img/food/Cooked_Salmon.png'
     },
     cookie: {
       'name':'Cookie',
@@ -117,7 +117,7 @@ function foodlist() {
       'saturatedRestore' : 0.4,
       'saturatedRatio' : 0.2,
       'carbs' : 6,
-      'image':'../img/food/Cookie.png'
+      'image':'./img/food/Cookie.png'
     },
     goldenApple: {
       'name':'Golden Apple',
@@ -125,7 +125,7 @@ function foodlist() {
       'saturatedRestore' : 9.6,
       'saturatedRatio' : 2.4,
       'carbs' : 14,
-      'image':'../img/food/Golden_Apple.png'
+      'image':'./img/food/Golden_Apple.png'
     },
     enchantedGoldenApple: {
       'name':'Enchanted Golden Apple',
@@ -133,7 +133,7 @@ function foodlist() {
       'saturatedRestore' : 9.6,
       'saturatedRatio' : 2.4,
       'carbs' : 14,
-      'image':'../img/food/Golden_Apple.png'
+      'image':'./img/food/Golden_Apple.png'
     },
     goldenCarrot: {
       'name':'Golden Carrot',
@@ -141,7 +141,7 @@ function foodlist() {
       'saturatedRestore' : 14.4,
       'saturatedRatio' : 2.4,
       'carbs' : 10,
-      'image':'../img/food/Golden_Carrot.png'
+      'image':'./img/food/Golden_Carrot.png'
     },
     melon: {
       'name':'Melon',
@@ -149,7 +149,7 @@ function foodlist() {
       'saturatedRestore' : 1.2,
       'saturatedRatio' : 0.6,
       'carbs' : 8,
-      'image':'../img/food/Melon_Slice.png'
+      'image':'./img/food/Melon_Slice.png'
     },
     mushroomStew: {
       'name':'Mushroom Stew',
@@ -157,7 +157,7 @@ function foodlist() {
       'saturatedRestore' : 7.2,
       'saturatedRatio' : 1.2,
       'carbs' : 3,
-      'image':'../img/food/Mushroomsoup.png'
+      'image':'./img/food/Mushroomsoup.png'
     },
     potato: {
       'name':'Potato',
@@ -165,7 +165,7 @@ function foodlist() {
       'saturatedRestore' : 0.6,
       'saturatedRatio' : 0.6,
       'carbs' : 0,
-      'image':'../img/food/Melon_Slice.png'
+      'image':'./img/food/Melon_Slice.png'
     },
     pumkpinPie: {
       'name':'Pumpkin Pie',
@@ -173,7 +173,7 @@ function foodlist() {
       'saturatedRestore' : 4.8,
       'saturatedRatio' : 0.6,
       'carbs' : 7,
-      'image':'../img/food/Pumpkin_Pie.png'
+      'image':'./img/food/Pumpkin_Pie.png'
     },
     rabbitStew: {
       'name':'Rabbit Stew',
@@ -181,7 +181,7 @@ function foodlist() {
       'saturatedRestore' : 12,
       'saturatedRatio' : 1.2,
       'carbs' : 0,
-      'image':'../img/food/Rabbit_Stew.png'
+      'image':'./img/food/Rabbit_Stew.png'
     },
     melon: {
       'name':'Melon',
@@ -189,7 +189,7 @@ function foodlist() {
       'saturatedRestore' : 1.2,
       'saturatedRatio' : 0.6,
       'carbs' : 15,
-      'image':'../img/food/Melon_Slice.png'
+      'image':'./img/food/Melon_Slice.png'
     },
     steak: {
       'name':'Steak',
@@ -197,7 +197,7 @@ function foodlist() {
       'saturatedRestore' : 12.8,
       'saturatedRatio' : 1.6,
       'carbs' : 0,
-      'image':'../img/food/Steak.png'
+      'image':'./img/food/Steak.png'
     }
   }
 }
