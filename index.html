@@ -110,12 +110,6 @@
                       </div>
                   </div>
                 </div>
-
-
-                  <div id="plr-insulin" style="display: block;">
-                    <label>Player Insulin: </label>
-                    {{insulinUnitsInSystem}}
-                  </div>
                   <ul class="food-list">
                     <li v-for="food in foods" v-on:mousedown="chewFood(food)" v-on:mouseup="stopChew">
                       <div class="food-list--img"  v-bind:style="{ backgroundImage: 'url('+food.image+')' }">
@@ -124,7 +118,9 @@
                       </div>
                     </li>
                   </ul>
-
+                  <div id="cast-spell" class="col-sm-4">
+                    <h2>Cast Spell</h2>
+                    <div class="cast-spell-icon" v-on:click="spellCast">Volare!</div>
                 </div>
               </div>
           </div>
@@ -132,8 +128,8 @@
         </div>
 
         <div id="chart"></div>
-        
-        <div class="col-md-6">
+
+        <div class="col-md-6" style="display:none">
           <div id="plrInsulinControls" class="panel panel-default">
 
             <div class="panel-heading">
@@ -209,7 +205,7 @@
         </div>
 
         <!-- CONFIGURATION COMPONENT -->
-        <div id="app-config" class="panel panel-default">
+        <div id="app-config" class="panel panel-default" style="display:none">
 
           <div class="panel-heading">
             <h3>App Config</h3>

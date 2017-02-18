@@ -9,7 +9,7 @@ var connect = new Connect({
     apiKey: 'D4494DDA2DE9DE353171F71BD7CC96AF-11501ACE74907B43FE6CEDEA75B63BD55D5C52AE3E187928F2C3DC52340716D6D9A3BFFEE922A938339D38B85EECE8156D9CF11F64503FF994E9FBA125D7DC58'
 });
 var connectQuery = new Connect({
-  projectId: '58a83b83ba2ddd08c013f840',  
+  projectId: '58a83b83ba2ddd08c013f840',
   apiKey: 'CF7C99D4FB11862B555778CC87A818C3-1D6DE9BA652EB82CBD237E56EC439448980641BD2C3E246133C08F75DEF66B946DFB917DF7E99CEF8E43C175E93EDDBEFC066DB6C834ABF07284D45782ABBD2C'
 })
 var chance = new Chance();
@@ -61,7 +61,7 @@ var vue = new Vue({
 
       //modaled info
       carbsAbsorptionRate: 2, // how many carbs are absorbed per cycle
-      insulinAbsorptionRate:0.5, // how many units of insulin are absorbed per cycle
+      insulinAbsorptionRate:0.133, // how many units of insulin are absorbed per cycle
       carbsPerInsulinUnit:15, // how many grams of carbs are metabolise per insulin unit
       carbsToHealthMagicNumber: 20, // how many carbs convert to 1 unit of player health when metabolise; 0-20 health range
       carbsToBGLMagicNumber:8, // how many carbs convert to one point of BGL when unmetabolised
@@ -124,7 +124,7 @@ var vue = new Vue({
       var insulinAbsorbed;
       var lowerBoundHealthyBGL = 4;
       var upperBoundHealthyBGL = 7;
-      
+
       if ((this.playerBGLValue < lowerBoundHealthyBGL) || isNaN(this.playerBGLValue)) {
         console.log('BGL too low: ', this.playerBGLValue);
 
@@ -135,7 +135,7 @@ var vue = new Vue({
         console.log('BGL NORMAL: ', this.playerBGLValue);
 
       }
-    
+
       console.log("In this tick:");
 
       // Absorb carbs
@@ -183,6 +183,12 @@ var vue = new Vue({
           var carbsConvertedToHealth = this.carbsPerInsulinUnit * insulinAbsorbed;
           var excessCarbs = carbsAbsorbingIntoBloodstream - carbsConvertedToHealth;
           console.log(`I have ${excessCarbs} in my bloodstream now`);
+          var newHeartsValue = this.playerHeartsValue + (carbsConvertedToHealth / this.carbsToHealthMagicNumber);
+          if (newHeartsValue > 20) {
+            this.playerHeartsValue = 20;
+          } else {
+            this.playerHeartsValue = newHeartsValue;
+          }
           this.playerHeartsValue += carbsConvertedToHealth / this.carbsToHealthMagicNumber;
           this.playerBGLValue = this.playerBGLValue + (excessCarbs / this.carbsToBGLMagicNumber);
       }
