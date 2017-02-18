@@ -8,8 +8,12 @@ var connect = new Connect({
     projectId: '58a83b83ba2ddd08c013f840',
     apiKey: 'D4494DDA2DE9DE353171F71BD7CC96AF-11501ACE74907B43FE6CEDEA75B63BD55D5C52AE3E187928F2C3DC52340716D6D9A3BFFEE922A938339D38B85EECE8156D9CF11F64503FF994E9FBA125D7DC58'
 });
+var connectQuery = new Connect({
+  projectId: '58a83b83ba2ddd08c013f840',  
+  apiKey: 'CF7C99D4FB11862B555778CC87A818C3-1D6DE9BA652EB82CBD237E56EC439448980641BD2C3E246133C08F75DEF66B946DFB917DF7E99CEF8E43C175E93EDDBEFC066DB6C834ABF07284D45782ABBD2C'
+})
 var chance = new Chance();
-var uniqueName = chance.first() + chance.integer({min: 0, max: 534532453212322});
+var uniqueName = chance.first() + '-' + chance.integer({min: 0, max: 100000});
 var stats = {name: uniqueName};
 // "use strict";
 var images = [];
@@ -36,9 +40,9 @@ var vue = new Vue({
       playerHeartsMax: 20,
       playerFoodValue: 20,
       playerFoodMax: 20,
-      playerInsulinInSystem: 0,
+      playerInsulinInSystem: 4,
       playerInsulinMax: 20,
-      playerCarbsInStomach: 0, // current carbs
+      playerCarbsInStomach: 10, // current carbs
       playerCarbsMax: 100,
       playerName: uniqueName,
       playerIsDead: false,
@@ -57,7 +61,7 @@ var vue = new Vue({
       particlesObject: {speed: 0, size: 0, color: ''},
 
       //modaled info
-      carbsAbsorptionRate:2, // how many carbs are absorbed per cycle
+      carbsAbsorptionRate: 2, // how many carbs are absorbed per cycle
       insulinAbsorptionRate:0.5, // how many units of insulin are absorbed per cycle
       carbsPerInsulinUnit:15, // how many grams of carbs are metabolise per insulin unit
       carbsToHealthMagicNumber: 20, // how many carbs convert to 1 unit of player health when metabolise; 0-20 health range
@@ -119,14 +123,31 @@ var vue = new Vue({
 
       var carbsAbsorbingIntoBloodstream;
       var insulinAbsorbed;
+<<<<<<< HEAD
 
       this.calculateParticleEffects(this.playerBGLValue);
 
+=======
+      var lowerBoundHealthyBGL = 4;
+      var upperBoundHealthyBGL = 7;
+      
+      if ((this.playerBGLValue < lowerBoundHealthyBGL) || isNaN(this.playerBGLValue)) {
+        console.log('BGL too low: ', this.playerBGLValue);
+
+      } else if (this.playerBGLValue > upperBoundHealthyBGL) {
+        console.log('BGL too high: ', this.playerBGLValue);
+
+      } else {
+        console.log('BGL NORMAL: ', this.playerBGLValue);
+
+      }
+    
+>>>>>>> 60c1719a8830b536230a1f3924db8fef0eec0309
       console.log("In this tick:");
 
       // Absorb carbs
       if (this.playerCarbsInStomach - this.carbsAbsorptionRate > 0) {
-          carbsAbsorbingIntoBloodstream = this.playerCarbsInStomach - this.carbsAbsorptionRate;
+          carbsAbsorbingIntoBloodstream = this.carbsAbsorptionRate;
       } else {
           carbsAbsorbingIntoBloodstream = this.playerCarbsInStomach;
       }
@@ -173,11 +194,17 @@ var vue = new Vue({
           this.playerBGLValue = this.playerBGLValue + (excessCarbs / this.carbsToBGLMagicNumber);
       }
 
-      if (insulinAbsorbed >= insulinNeededToMetaboliseCarbsInBloodstream) { // BGL will be neutral or will drop
+      if (insulinAbsorbed === insulinNeededToMetaboliseCarbsInBloodstream) {
+        if (insulinNeededToMetaboliseCarbsInBloodstream !== 0) {
+          console.log('That was just the right amount!');
+        }
+      }
+
+      if (insulinAbsorbed > insulinNeededToMetaboliseCarbsInBloodstream) { // BGL will be neutral or will drop
         if (this.playerBGLValue < 8) {
           console.log(`I absorbed too much insulin in this tick`);
         }
-        console.log(`I have  ${carbsAbsorbingIntoBloodstream} ${this.carbsToEnergyHealthNumber}`);
+        console.log(`I have ${carbsAbsorbingIntoBloodstream} grams of carbs in my bloodstream`);
         var carbsConvertedToHealth = carbsAbsorbingIntoBloodstream * this.carbsToEnergyHealthNumber;
 
         var excessInsulin = insulinAbsorbed - (carbsConvertedToHealth / this.carbsPerInsulinUnit);
@@ -203,7 +230,6 @@ var vue = new Vue({
       stats.BGL = this.playerBGLValue;
       connect.push('spa-stats-collection', stats);
 
-
       if (this.playerFoodValue > 0) {
         this.playerFoodValue -= 1;
       }
@@ -217,7 +243,21 @@ var vue = new Vue({
       stats.BGL = this.playerBGLValue;
       connect.push('spa-stats-collection', stats);
 
-
+    connectQuery.query("spa-stats-collection")
+    .select({"BGL": "BGL"})
+    .filter({
+        "name": this.playerName
+    })
+    .execute()
+    .then(function(result) {
+        // Handle the result
+        var chart = Connect.visualize(query)
+        .as('chart')
+        .inside('#chart')
+        .draw();
+    }, function(error) {
+      console.log(error);
+    });
 
     },
     eatFood: function(){
