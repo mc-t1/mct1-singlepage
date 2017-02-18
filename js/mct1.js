@@ -123,26 +123,9 @@ var vue = new Vue({
 
       var carbsAbsorbingIntoBloodstream;
       var insulinAbsorbed;
-<<<<<<< HEAD
 
       this.calculateParticleEffects(this.playerBGLValue);
 
-=======
-      var lowerBoundHealthyBGL = 4;
-      var upperBoundHealthyBGL = 7;
-      
-      if ((this.playerBGLValue < lowerBoundHealthyBGL) || isNaN(this.playerBGLValue)) {
-        console.log('BGL too low: ', this.playerBGLValue);
-
-      } else if (this.playerBGLValue > upperBoundHealthyBGL) {
-        console.log('BGL too high: ', this.playerBGLValue);
-
-      } else {
-        console.log('BGL NORMAL: ', this.playerBGLValue);
-
-      }
-    
->>>>>>> 60c1719a8830b536230a1f3924db8fef0eec0309
       console.log("In this tick:");
 
       // Absorb carbs
