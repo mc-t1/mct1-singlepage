@@ -32,7 +32,7 @@ var vue = new Vue({
       playerCarbsMax: 100,
       playerName:'Billy',
       playerIsDead: false,
-      playerBGLValue: 5,
+      playerBGLValue: 5, // value
       playerBGLMAX:30,
       playerBGLDisplayMax:20,
       gameLoopInterval: 5000,
@@ -108,6 +108,13 @@ var vue = new Vue({
       var carbsAbsorbingIntoBloodstream;
       var insulinAbsorbed;
 
+      if (this.playerBGLValue > NUMBER) {
+        //if value is less then certain playerBGL do stuff
+      }
+      if (this.playerBGLValue < NUMBER) {
+        //if value is higher then certain playerBGL do otheer stuff
+      }
+      
       console.log("In this tick:");
 
       // Absorb carbs
