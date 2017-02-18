@@ -1,14 +1,16 @@
-/*
-        selector: '#myCanvas1',
+function startBGL(options) {
+    var defaults = {
+        selector: '#myCanvas',
         color: '#0f9976',
         connectParticles: false,
         sizeVariations: 5,
         speed: 0.5,
         maxParticles: 100,
-*/
+    };
 
-function startBGL(options) {
-    Particles.init( options );
+    var setOptions = options || defaults;
+
+    Particles.init( setOptions );
 };
 
 function stopBGL() {

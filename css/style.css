@@ -148,7 +148,7 @@ body {
   text-align: center;
 }
 .particle-canvas {
-  position: absolute;
+  position: fixed;
   width: 100%;
   z-index: 1000;
   pointer-events: none;
