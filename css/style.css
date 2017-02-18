@@ -138,6 +138,7 @@ body {
 
 .plr-avatar-img--dead {
   position:relative;
+  text-align: center;
 }
 .plr-avatar-img--dead img {
   width: 130px;
