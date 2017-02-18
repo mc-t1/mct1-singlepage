@@ -95,7 +95,7 @@
                     {{carbsInSystem}}
                   </div>
                   <ul class="food-list">
-                    <li v-for="food in foods">
+                    <li v-for="food in foods" v-on:mousedown="chewFood()" v-on:mouseup="stopChew">
                       <div class="food-list--img">
                         <img v-bind:src="food.image"/>
                       </div>

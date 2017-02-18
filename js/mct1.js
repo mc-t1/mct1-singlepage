@@ -16,6 +16,10 @@ var dummyCarbsMap = {
 }*/
 // "use strict";
 var images = [];
+// var chew_audio;
+// var drink_audio;
+var complete_chew_tid;
+var complete_drink_tid;
 var vue = new Vue({
   el: "#app",
   template: "#vueroot",
@@ -46,7 +50,9 @@ var vue = new Vue({
       gameLoopTimer: null,
       bglisLow:false,
       bglisHigh: false,
-      foods : foodList()
+      foods : foodList(),
+      chew_audio:null,
+      drink_audio:null,
     };
   },
   created: function(){
@@ -55,13 +61,40 @@ var vue = new Vue({
   },
   methods: {
     chewFood: function () {
+      if (this.chew_audio != null) {
+        this.chew_audio.pause();
+        this.chew_audio.currentTime = 0;
+      }
+
       var rand = Math.floor((Math.random() * 2) + 1);
-      var audio = new Audio('./mp3/minecraft_chewing_'+rand+'.mp3');
-      audio.play();
+       this.chew_audio = new Audio('./mp3/minecraft_chewing_'+rand+'.mp3');
+
+      this.chew_audio.play();
+
+      complete_chew_tid = setTimeout(this.eatFood, 2000);
+
     },
     slurpPotion: function () {
-      var audio = new Audio('./mp3/minecraft_drinking_potion_1.mp3');
-      audio.play();
+      if (this.drink_audio != null) {
+        this.drink_audio.pause();
+        this.drink_audio.currentTime = 0;
+      }
+      this.drink_audio = new Audio('./mp3/minecraft_drinking_potion_1.mp3');
+      this.drink_audio.play();
+    },
+    stopSlurp: function() {
+      if (!this.drink_audio.ended) {
+        clearInterval(complete_drink_tid);
+      }
+      this.drink_audio.pause();
+      this.drink_audio.currentTime = 0;
+    },
+    stopChew : function() {
+      if (!this.chew_audio.ended) {
+        clearInterval(complete_chew_tid);
+      }
+      this.chew_audio.pause();
+      this.chew_audio.currentTime = 0;
     },
     startGameLoop: function () {
       console.log('this.gameLoopInterval', this.gameLoopInterval);
