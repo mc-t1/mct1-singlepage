@@ -275,6 +275,8 @@ var vue = new Vue({
       }
       else {
         this.stopGameLoop();
+        this.playerIsDead = true;
+        $(".flashHealth").addClass("flashHealthTrigger-ZEROED");
       }
 
       /**
