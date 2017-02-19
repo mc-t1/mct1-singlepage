@@ -82,6 +82,11 @@ var vue = new Vue({
   },
   created: function(){
     this.startGameLoop();
+    // how many carbs convert to one point of BGL when unmetabolised
+    this.metabolism.carbsToBGLMagicNumber = this.metabolism.carbsPerInsulinUnit * this.metabolism.BGLCorrectionPerInsulinUnitMagicNumber;
+    // Naively match carbs and insulin absorption - with a slight bias to carb absorption to allow recovery from lows
+    // how many units of insulin are absorbed per cycle
+    this.metabolism.insulinAbsorptionRate = parseFloat(this.metabolism.carbsAbsorptionRate) / parseFloat(this.metabolism.carbsPerInsulinUnit) * 0.8; 
   },
   methods: {
     chewFood: function (food) {
@@ -130,11 +135,7 @@ var vue = new Vue({
       clearInterval(this.gameLoopTimer);
     },
     iterateExhaustion: function () {
-      // how many carbs convert to one point of BGL when unmetabolised
-      this.metabolism.carbsToBGLMagicNumber = this.metabolism.carbsPerInsulinUnit * this.metabolism.BGLCorrectionPerInsulinUnitMagicNumber;
-      // Naively match carbs and insulin absorption - with a slight bias to carb absorption to allow recovery from lows
-      // how many units of insulin are absorbed per cycle
-      this.metabolism.insulinAbsorptionRate = parseFloat(this.metabolism.carbsAbsorptionRate) / parseFloat(this.metabolism.carbsPerInsulinUnit);
+
 
       var carbsAbsorbingIntoBloodstream;
       var insulinAbsorbed;
@@ -142,9 +143,7 @@ var vue = new Vue({
       var lowerBoundHealthyBGL = 4;
       var upperBoundHealthyBGL = 7;
 
-
       this.calculateParticleEffects(this.playerBGLValue);
-
 
       if ((this.playerBGLValue < lowerBoundHealthyBGL) || isNaN(this.playerBGLValue)) {
         console.log('BGL too low: ', Mathz.round(this.playerBGLValue, 1));
