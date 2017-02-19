@@ -49,7 +49,7 @@ var vue = new Vue({
       playerBGLValue: 5, // value
       playerBGLMAX:30,
       playerBGLDisplayMax:20,
-      gameLoopInterval: 6000,
+      gameLoopInterval: 2000,
       gameLoopTimer: null,
       bglisLow:false,
       bglisHigh: false,
@@ -64,9 +64,13 @@ var vue = new Vue({
       carbsAbsorptionRate: 2, // how many carbs are absorbed per cycle
       insulinAbsorptionRate:0.133, // how many units of insulin are absorbed per cycle
       carbsPerInsulinUnit:15, // how many grams of carbs are metabolise per insulin unit
+
+      carbsPerInsulinUnit: 7.5, // how many grams of carbs are metabolise per insulin unit
+      // Naively match carbs and insulin absorption
+      insulinAbsorptionRate: carbsAbsorptionRate / carbsPerInsulinUnit, // how many units of insulin are absorbed per cycle
       carbsToHealthMagicNumber: 20, // how many carbs convert to 1 unit of player health when metabolise; 0-20 health range
-      carbsToBGLMagicNumber:8, // how many carbs convert to one point of BGL when unmetabolised
       BGLCorrectionPerInsulinUnitMagicNumber: 2, // how many BGL points drop per one unit of insulin without carbs
+      carbsToBGLMagicNumber: carbsPerInsulinUnit * BGLCorrectionPerInsulinUnitMagicNumber, // how many carbs convert to one point of BGL when unmetabolised
       carbsToEnergyHealthNumber: 1
     };
   },
@@ -176,6 +180,8 @@ var vue = new Vue({
           } else {
             console.log(`I didn't absorb enough insulin`);
           }
+          // Glucose is absorbed from the bloodstream into the cells, providing health
+          // Absorption of glucose into cells is proportional to insulin absorbed
           var carbsConvertedToHealth = this.carbsPerInsulinUnit * insulinAbsorbed;
           var excessCarbs = carbsAbsorbingIntoBloodstream - carbsConvertedToHealth;
           console.log(`I have ${excessCarbs} in my bloodstream now`);
@@ -185,13 +191,20 @@ var vue = new Vue({
           } else {
             this.playerHeartsValue = newHeartsValue;
           }
+
           this.playerHeartsValue += carbsConvertedToHealth / this.carbsToHealthMagicNumber;
+
+          // Here glucose that was not absorbed remains in the blood and raises blood glucose level
+          var excessCarbs = carbsAbsorbingIntoBloodstream - carbsConvertedToHealth;
           this.playerBGLValue = this.playerBGLValue + (excessCarbs / this.carbsToBGLMagicNumber);
+          console.log(`I have ${excessCarbs} in my bloodstream now`);
       }
 
       if (insulinAbsorbed === insulinNeededToMetaboliseCarbsInBloodstream) {
         if (insulinNeededToMetaboliseCarbsInBloodstream !== 0) {
           console.log('That was just the right amount!');
+          var carbsConvertedToHealth = carbsAbsorbingIntoBloodstream * this.carbsToEnergyHealthNumber;
+          this.playerHeartsValue += carbsConvertedToHealth;
         }
       }
 
@@ -200,30 +213,37 @@ var vue = new Vue({
           console.log(`I absorbed too much insulin in this tick`);
         }
         console.log(`I have ${carbsAbsorbingIntoBloodstream} grams of carbs in my bloodstream`);
-        var carbsConvertedToHealth = carbsAbsorbingIntoBloodstream * this.carbsToEnergyHealthNumber;
 
-        var excessInsulin = insulinAbsorbed - (carbsConvertedToHealth / this.carbsPerInsulinUnit);
+        // Glucose is absorbed from the bloodstream into the cells, providing health
+        // Absorption of glucose into cells is proportional to insulin absorbed
+        var carbsConvertedToHealth = carbsAbsorbingIntoBloodstream * this.carbsToEnergyHealthNumber;
         this.playerHeartsValue += carbsConvertedToHealth;
-        console.log(this.playerBGLValue);
+
+        // Insulin absorbed above the carb absorption causes the Blood Glucose Level to drop
+        var excessInsulin = insulinAbsorbed - (carbsConvertedToHealth / this.carbsPerInsulinUnit);
+        var oldBGLValue = this.playerBGLValue;
         var newBGLValue = this.playerBGLValue - (excessInsulin * this.BGLCorrectionPerInsulinUnitMagicNumber);
+
         if (newBGLValue <= 0) {
           this.playerBGLValue = 0;
         } else {
           this.playerBGLValue = newBGLValue;
         }
-        console.log(this.playerBGLValue);
+        console.log(`My BGL went from ${oldBGLValue} to ${newBGLValue}`);
 
-        if (this.playerBGLValue < 4) {
-          // This is naive - a portion of this "excess Insulin" may in fact be a correction dose
-          // To get this part right requires discounting the excessInsulin (insulin above carb absorption)
-          // for any correction effect on high BGL, then reporting the difference
-          console.log(`I absorbed ${excessInsulin} units above my requirement [*see comment]`);
+        if (this.playerBGLValue < lowerBoundHealthyBGL) {
+          // Insulin used to metabolise carbs that were absorbed this tick
+          var insulinUsedToMetaboliseCarbsThisTick = (carbsConvertedToHealth / this.carbsPerInsulinUnit);
+          // Insulin used to reduce BGL into the health range in this tick
+          var insulinUsedToReduceBGLWithinRangeThisTick = (oldBGLValue - upperBoundHealthyBGL) / this.carbsPerInsulinUnit;
+          // This is the amount of insulin that was "too much" to absorb in this tick
+          var excessInsulin = insulinAbsorbed - (insulinUsedToMetaboliseCarbsThisTick + insulinUsedToReduceBGLWithinRangeThisTick);
+
+          console.log(`I absorbed ${excessInsulin} units above my requirement`);
         }
         console.log(` ${excessInsulin} `);
       }
       console.log(`My BGL is ${this.playerBGLValue}`);
-      stats.BGL = this.playerBGLValue;
-      connect.push('spa-stats-collection', stats);
 
       if (this.playerFoodValue > 0) {
         this.playerFoodValue -= 1;
@@ -234,25 +254,36 @@ var vue = new Vue({
       else {
         this.stopGameLoop();
       }
-      //console.log(`My BGL is ${BGL}`);
+
+      /**
+       *  GetConnect.io stats and visualization
+       * */
+
       stats.BGL = this.playerBGLValue;
       connect.push('spa-stats-collection', stats);
 
-    connectQuery.query("spa-stats-collection")
-    .select({"BGL": "BGL"})
-    .filter({
-        "name": this.playerName
-    })
-    .execute()
-    .then(function(result) {
-        // Handle the result
-        var chart = Connect.visualize(query)
-        .as('chart')
-        .inside('#chart')
-        .draw();
-    }, function(error) {
-      console.log(error);
-    });
+      connectQuery.query("spa-stats-collection")
+      .select({"sum": "BGL"})
+      .filter({
+          "name": this.playerName
+      })
+      .execute()
+      .then(function(result) {
+          // Handle the result
+          console.log(result);
+      }, function(error) {
+        console.log(error);
+      });
+
+      var chart = Connect.visualize(connectQuery)
+      .as('chart')
+      .inside('#chart')
+      .with({
+        chart: {
+          type: "bar"
+        }
+      })
+      .draw();
 
     },
     eatFood: function(){
@@ -357,53 +388,73 @@ var vue = new Vue({
       var lowColor = '#ff0000';
       var highColor = '#00ff00';
       var startObj = {};
+      var flashColor = undefined;
 
       if ((BGL < veryLowBGL) || isNaN(BGL)) {
         startObj = {
-          speed: 2,
+          speed: 5,
           size: 15,
           color: lowColor,
+          number: 300,
         };
+        flashColor = lowColor;
       } else if (BGL < lowBGL) {
         startObj = {
-          speed: 1,
+          speed: 2,
           size: 10,
           color: lowColor,
+          number: 150,
         };
+        flashColor = lowColor;
       } else if (BGL > extremeBGL) {
         startObj = {
-          speed: 2,
+          speed: 5,
           size: 15,
           color: highColor,
+          number: 400,
         };
+        flashColor = highColor;
       } else if (BGL > veryHighBGL) {
         startObj = {
-          speed: 1,
+          speed: 3,
           size: 10,
           color: highColor,
+          number: 300,
         };
+        flashColor = highColor;
       } else if (BGL > highBGL) {
         startObj = {
-          speed: 0.5,
+          speed: 1,
           size: 5,
           color: highColor,
+          number: 100,
         };
+        flashColor = highColor;
       } else {
         stopBGL();
+        flashColor = undefined;
       }
 
       if ((startObj.speed !== this.particlesObject.speed) ||
           (startObj.size !== this.particlesObject.size) ||
           (startObj.color !== this.particlesObject.color)) {
-            console.log("----------------------->NEW DATA");
+            // console.log("----------------------->NEW DATA");
             this.particlesObject = startObj;
-            console.log("----------------------->THE OBJ", this.particlesObject);
-            stopBGL();
+            // console.log("----------------------->THE OBJ", this.particlesObject);
             startBGL(this.particlesObject);
+            this.flashHealth();
       }
     },
-    spellCast: function() {
 
-    }
+    spellCast: function() {
+      //
+    },
+
+    flashHealth: function(color) {
+      if (!color) { return }
+
+      console.log('------------------------>Flash Colour: ', color);
+
+    },
   }
 });
