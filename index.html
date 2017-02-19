@@ -111,12 +111,6 @@
                       </div>
                   </div>
                 </div>
-
-
-                  <div id="plr-insulin" style="display: block;">
-                    <label>Player Insulin: </label>
-                    {{insulinUnitsInSystem}}
-                  </div>
                   <ul class="food-list">
                     <li v-for="food in foods" v-on:mousedown="chewFood(food)" v-on:mouseup="stopChew">
                       <div class="food-list--img"  v-bind:style="{ backgroundImage: 'url('+food.image+')' }">
@@ -125,7 +119,19 @@
                       </div>
                     </li>
                   </ul>
+                  <div  class="col-xs-12" class="change-values">
+                    <div><p>Absorbtion Rate is {{metabolism.carbsAbsorptionRate}}</p><input v-model="metabolism.carbsAbsorptionRate"></input></div>
+                    <div><p>Carbs per insulin unit  is {{metabolism.carbsPerInsulinUnit}}</p><input v-model="metabolism.carbsPerInsulinUnit"></input></div>
+                    <div><p>carbs to health magic no.  is {{metabolism.carbsToHealthMagicNumber}}</p><input v-model="metabolism.carbsToHealthMagicNumber"></input></div>
+                    <div><p>BGLCorrectionPerInsulinUnitMagicNumber {{metabolism.BGLCorrectionPerInsulinUnitMagicNumber}}</p><input v-model="metabolism.BGLCorrectionPerInsulinUnitMagicNumber"></input></div>
+                    <div><p>carbsToEnergyHealthNumber {{metabolism.carbsToEnergyHealthNumber}}</p><input v-modal="metabolism.carbsToEnergyHealthNumber"></input></div>
+                    <div><p>carbsToBGLMagicNumber {{metabolism.carbsToHealthMagicNumber}}</p><input v-model="metabolism.carbsToHealthMagicNumber"></input></div>
+                    <div><p>insulinAbsorptionRate {{metabolism.insulinAbsorptionRate}}</p><input v-model="metabolism.insulinAbsorptionRate"></input></div>
 
+                  </div>
+                  <div id="cast-spell" class="col-sm-4">
+                    <h2>Cast Spell</h2>
+                    <div class="cast-spell-icon" v-on:click="spellCast">Volare!</div>
                 </div>
               </div>
           </div>
@@ -133,8 +139,8 @@
         </div>
 
         <div id="chart"></div>
-        
-        <div class="col-md-6">
+
+        <div class="col-md-6" style="display:none">
           <div id="plrInsulinControls" class="panel panel-default">
 
             <div class="panel-heading">
@@ -210,7 +216,7 @@
         </div>
 
         <!-- CONFIGURATION COMPONENT -->
-        <div id="app-config" class="panel panel-default">
+        <div id="app-config" class="panel panel-default" style="display:none">
 
           <div class="panel-heading">
             <h3>App Config</h3>

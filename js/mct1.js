@@ -9,7 +9,7 @@ var connect = new Connect({
     apiKey: 'D4494DDA2DE9DE353171F71BD7CC96AF-11501ACE74907B43FE6CEDEA75B63BD55D5C52AE3E187928F2C3DC52340716D6D9A3BFFEE922A938339D38B85EECE8156D9CF11F64503FF994E9FBA125D7DC58'
 });
 var connectQuery = new Connect({
-  projectId: '58a83b83ba2ddd08c013f840',  
+  projectId: '58a83b83ba2ddd08c013f840',
   apiKey: 'CF7C99D4FB11862B555778CC87A818C3-1D6DE9BA652EB82CBD237E56EC439448980641BD2C3E246133C08F75DEF66B946DFB917DF7E99CEF8E43C175E93EDDBEFC066DB6C834ABF07284D45782ABBD2C'
 })
 var chance = new Chance();
@@ -62,15 +62,16 @@ var vue = new Vue({
       metabolism: {
         carbsAbsorptionRate:2, // how many carbs are absorbed per tick
         carbsPerInsulinUnit:7.5, // how many grams of carbs are metabolise per insulin unit
-        carbsToHealthMagicNumber:20; // how many carbs convert to 1 unit of player health when metabolise; 0-20 health range
-        BGLCorrectionPerInsulinUnitMagicNumber:2; // how many BGL points drop per one unit of insulin without carbs
-        carbsToEnergyHealthNumber: 1;
+        carbsToHealthMagicNumber:20, // how many carbs convert to 1 unit of player health when metabolise; 0-20 health range
+        BGLCorrectionPerInsulinUnitMagicNumber:2, // how many BGL points drop per one unit of insulin without carbs
+        carbsToEnergyHealthNumber: 1,
         // *Computed at run-time
-        carbsToBGLMagicNumber: 1; // how many carbs convert to one point of BGL when unmetabolised
+        carbsToBGLMagicNumber: 1, // how many carbs convert to one point of BGL when unmetabolised
         // *Computed at run-time
-        insulinAbsorptionRate: 1; // how many units of insulin are absorbed per cycle
+        insulinAbsorptionRate: 1, // how many units of insulin are absorbed per cycle
       },
       particlesObject: {speed: 0, size: 0, color: ''},
+
     };
   },
   created: function(){
@@ -124,15 +125,26 @@ var vue = new Vue({
     },
     iterateExhaustion: function () {
       // how many carbs convert to one point of BGL when unmetabolised
-      this.metabolism.carbsToBGLMagicNumber = this.metabolism.carbsPerInsulinUnit * this.metabolism.BGLCorrectionPerInsulinUnitMagicNumber; 
+      this.metabolism.carbsToBGLMagicNumber = this.metabolism.carbsPerInsulinUnit * this.metabolism.BGLCorrectionPerInsulinUnitMagicNumber;
       // Naively match carbs and insulin absorption
       // how many units of insulin are absorbed per cycle
-      this.metabolism.insulinAbsorptionRate = this.carbsAbsorptionRate / this.carbsPerInsulinUnit; 
+      this.metabolism.insulinAbsorptionRate = this.carbsAbsorptionRate / this.carbsPerInsulinUnit;
       var carbsAbsorbingIntoBloodstream;
       var insulinAbsorbed;
 
+      var lowerBoundHealthyBGL = 4;
+      var upperBoundHealthyBGL = 7;
+
+
       this.calculateParticleEffects(this.playerBGLValue);
 
+
+      if ((this.playerBGLValue < lowerBoundHealthyBGL) || isNaN(this.playerBGLValue)) {
+        console.log('BGL too low: ', this.playerBGLValue);
+      this.calculateParticleEffects(this.playerBGLValue);
+      } else {
+        console.log('BGL NORMAL: ', this.playerBGLValue);
+      }
       console.log("In this tick:");
 
       // Absorb carbs
@@ -179,8 +191,15 @@ var vue = new Vue({
           }
           // Glucose is absorbed from the bloodstream into the cells, providing health
           // Absorption of glucose into cells is proportional to insulin absorbed
+
           var carbsConvertedToHealth = this.metabolism.carbsPerInsulinUnit * insulinAbsorbed;
-          this.playerHeartsValue += carbsConvertedToHealth / this.metabolism.carbsToHealthMagicNumber;
+          var newHeartsValue = this.playerHeartsValue + (carbsConvertedToHealth / this.metabolism.carbsToHealthMagicNumber);
+          if (newHeartsValue > this.playerHeartsMax) {
+            this.playerHeartsValue = this.playerHeartsMax;
+          } else {
+            this.playerHeartsValue = newHeartsValue;
+          }
+
 
           // Here glucose that was not absorbed remains in the blood and raises blood glucose level
           var excessCarbs = carbsAbsorbingIntoBloodstream - carbsConvertedToHealth;
@@ -192,7 +211,12 @@ var vue = new Vue({
         if (insulinNeededToMetaboliseCarbsInBloodstream !== 0) {
           console.log('That was just the right amount!');
           var carbsConvertedToHealth = carbsAbsorbingIntoBloodstream * this.metabolism.carbsToHealthMagicNumber;
-          this.playerHeartsValue += carbsConvertedToHealth;
+          var newHeartsValue = this.playerHeartsValue + (carbsConvertedToHealth);
+          if (newHeartsValue > 20) {
+            this.playerHeartsValue = 20;
+          } else {
+            this.playerHeartsValue = newHeartsValue;
+          }
         }
       }
 
@@ -205,13 +229,20 @@ var vue = new Vue({
         // Glucose is absorbed from the bloodstream into the cells, providing health
         // Absorption of glucose into cells is proportional to insulin absorbed
         var carbsConvertedToHealth = carbsAbsorbingIntoBloodstream * this.metabolism.carbsToHealthMagicNumber;
+        var newHeartsValue = this.playerHeartsValue + carbsConvertedToHealth;
+        if (newHeartsValue > 20) {
+          this.playerHeartsValue = 20;
+        } else {
+          this.playerHeartsValue = newHeartsValue;
+        }
         this.playerHeartsValue += carbsConvertedToHealth;
 
         // Insulin absorbed above the carb absorption causes the Blood Glucose Level to drop
         var excessInsulin = insulinAbsorbed - (carbsConvertedToHealth / this.metabolism.carbsPerInsulinUnit);
         var oldBGLValue = this.playerBGLValue;
+
         var newBGLValue = this.playerBGLValue - (excessInsulin * this.metabolism.BGLCorrectionPerInsulinUnitMagicNumber);
-        
+
         if (newBGLValue <= 0) {
           this.playerBGLValue = 0;
         } else {
@@ -426,7 +457,7 @@ var vue = new Vue({
         this.flashHealth(undefined);
       }
 
-      if ((startObj.speed !== this.particlesObject.speed) || 
+      if ((startObj.speed !== this.particlesObject.speed) ||
           (startObj.size !== this.particlesObject.size) ||
           (startObj.color !== this.particlesObject.color)) {
             // console.log("----------------------->NEW DATA");
@@ -435,6 +466,11 @@ var vue = new Vue({
             startBGL(this.particlesObject);
       }
     },
+
+    spellCast: function() {
+      //
+    },
+
     flashHealth: function(color) {
       if (!color) { return }
       let timeout = Math.round(this.gameLoopInterval / 4);
