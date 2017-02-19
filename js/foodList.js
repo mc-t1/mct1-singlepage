@@ -36,10 +36,10 @@ function foodlist() {
       'saturatedRestore' : 1.2,
       'saturatedRatio' : 1.2,
       'carbs': 10,
-      'image':'./img/food/Beetroot.png'
+      'image':'./img/food/Beetroot_Soup.png'
     },
     bread: {
-      'name':'Beetroot Soup',
+      'name':'Bread',
       'restoration' : 5,
       'saturatedRestore' : 6,
       'saturatedRatio' : 1.2,
@@ -127,14 +127,6 @@ function foodlist() {
       'carbs' : 14,
       'image':'./img/food/Golden_Apple.png'
     },
-    enchantedGoldenApple: {
-      'name':'Enchanted Golden Apple',
-      'restoration' : 4,
-      'saturatedRestore' : 9.6,
-      'saturatedRatio' : 2.4,
-      'carbs' : 14,
-      'image':'./img/food/Golden_Apple.png'
-    },
     goldenCarrot: {
       'name':'Golden Carrot',
       'restoration' : 6,
@@ -165,7 +157,7 @@ function foodlist() {
       'saturatedRestore' : 0.6,
       'saturatedRatio' : 0.6,
       'carbs' : 0,
-      'image':'./img/food/Melon_Slice.png'
+      'image':'./img/food/Potato.png'
     },
     pumkpinPie: {
       'name':'Pumpkin Pie',
