@@ -18,19 +18,6 @@ var stats = {name: uniqueName};
 // "use strict";
 var images = [];
 
-var MetabolismConstants = function (){
-    this.carbsAbsorptionRate = 2; // how many carbs are absorbed per tick
-    this.carbsPerInsulinUnit = 7.5; // how many grams of carbs are metabolise per insulin unit
-      // Naively match carbs and insulin absorption
-    this.insulinAbsorptionRate = this.carbsAbsorptionRate / this.carbsPerInsulinUnit; // how many units of insulin are absorbed per cycle
-    this.carbsToHealthMagicNumber = 20; // how many carbs convert to 1 unit of player health when metabolise; 0-20 health range
-    this.BGLCorrectionPerInsulinUnitMagicNumber = 2; // how many BGL points drop per one unit of insulin without carbs
-    this.carbsToBGLMagicNumber = this.carbsPerInsulinUnit * this.BGLCorrectionPerInsulinUnitMagicNumber; // how many carbs convert to one point of BGL when unmetabolised
-    this.carbsToEnergyHealthNumber = 1;
-};
-
-var metabolism = new MetabolismConstants();
-
 // var chew_audio;
 // var drink_audio;
 var complete_chew_tid;
@@ -72,6 +59,17 @@ var vue = new Vue({
       drink_audio:null,
       insulineDoseUnits:5,
       currentFoodValue: 0,
+      metabolism: {
+        carbsAbsorptionRate:2, // how many carbs are absorbed per tick
+        carbsPerInsulinUnit:7.5, // how many grams of carbs are metabolise per insulin unit
+        carbsToHealthMagicNumber:20; // how many carbs convert to 1 unit of player health when metabolise; 0-20 health range
+        BGLCorrectionPerInsulinUnitMagicNumber:2; // how many BGL points drop per one unit of insulin without carbs
+        carbsToEnergyHealthNumber: 1;
+        // *Computed at run-time
+        carbsToBGLMagicNumber: 1; // how many carbs convert to one point of BGL when unmetabolised
+        // *Computed at run-time
+        insulinAbsorptionRate: 1; // how many units of insulin are absorbed per cycle
+      },
       particlesObject: {speed: 0, size: 0, color: ''},
     };
   },
@@ -125,7 +123,11 @@ var vue = new Vue({
       clearInterval(this.gameLoopTimer);
     },
     iterateExhaustion: function () {
-
+      // how many carbs convert to one point of BGL when unmetabolised
+      this.metabolism.carbsToBGLMagicNumber = this.metabolism.carbsPerInsulinUnit * this.metabolism.BGLCorrectionPerInsulinUnitMagicNumber; 
+      // Naively match carbs and insulin absorption
+      // how many units of insulin are absorbed per cycle
+      this.metabolism.insulinAbsorptionRate = this.carbsAbsorptionRate / this.carbsPerInsulinUnit; 
       var carbsAbsorbingIntoBloodstream;
       var insulinAbsorbed;
 
@@ -134,8 +136,8 @@ var vue = new Vue({
       console.log("In this tick:");
 
       // Absorb carbs
-      if (this.playerCarbsInStomach - metabolism.carbsAbsorptionRate > 0) {
-          carbsAbsorbingIntoBloodstream = metabolism.carbsAbsorptionRate;
+      if (this.playerCarbsInStomach - this.metabolism.carbsAbsorptionRate > 0) {
+          carbsAbsorbingIntoBloodstream = this.metabolism.carbsAbsorptionRate;
       } else {
           carbsAbsorbingIntoBloodstream = this.playerCarbsInStomach;
       }
