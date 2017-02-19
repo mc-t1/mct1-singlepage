@@ -418,7 +418,7 @@ var vue = new Vue({
       var highColor = '#00ff00';
       var startObj = {};
 
-      if ((BGL < veryLowBGL) || isNaN(BGL)) {
+      if ((BGL <= veryLowBGL) || isNaN(BGL)) {
         startObj = {
           speed: 5,
           size: 15,
@@ -450,7 +450,7 @@ var vue = new Vue({
           number: 300,
         };
         this.flashHealth('greenDark');
-      } else if (BGL > highBGL) {
+      } else if (BGL >= highBGL) {
         startObj = {
           speed: 1,
           size: 5,
@@ -478,39 +478,41 @@ var vue = new Vue({
     },
 
     flashHealth: function(color) {
-      let timeout = Math.round(this.gameLoopInterval / 4);
-      if (timeout < 1000) { timeout = 1000; }
-
+      if (this.playerIsDead) { return; }
+      // let timeout = Math.round(this.gameLoopInterval / 4);
+      //if (timeout < 1000) { timeout = 1000; }
+      let timeout = 500;
 
       switch(color) {
         case 'redDark':
-          $(".flashHealth").toggleClass("flashHealthTriggerRED");
+          $(".flashHealth").addClass("flashHealthTriggerRED");
           setTimeout(function() {
-            $(".flashHealth").toggleClass("flashHealthTriggerRED");
+            $(".flashHealth").removeClass("flashHealthTriggerRED");
           }, timeout);
           break;
         case 'redLight':
-          $(".flashHealth").toggleClass("flashHealthTriggerRED");
+
+          $(".flashHealth").addClass("flashHealthTriggerRED");
           setTimeout(function() {
-            $(".flashHealth").toggleClass("flashHealthTriggerRED");
+            $(".flashHealth").removeClass("flashHealthTriggerRED");
           }, timeout);
           break;
         case 'greenLight':
-          $(".flashHealth").toggleClass("flashHealthTriggerGREEN");
+          $(".flashHealth").addClass("flashHealthTriggerGREEN");
           setTimeout(function() {
-            $(".flashHealth").toggleClass("flashHealthTriggerGREEN");
+            $(".flashHealth").removeClass("flashHealthTriggerGREEN");
           }, timeout);
           break;
         case 'greenDark':
-          $(".flashHealth").toggleClass("flashHealthTriggerGREEN");
+          $(".flashHealth").addClass("flashHealthTriggerGREEN");
           setTimeout(function() {
-            $(".flashHealth").toggleClass("flashHealthTriggerGREEN");
+            $(".flashHealth").removeClass("flashHealthTriggerGREEN");
           }, timeout);
           break;
         case 'greenDeathly':
-          $(".flashHealth").toggleClass("flashHealthTriggerGREEN");
+          $(".flashHealth").addClass("flashHealthTriggerGREEN");
           setTimeout(function() {
-            $(".flashHealth").toggleClass("flashHealthTriggerGREEN");
+            $(".flashHealth").removeClass("flashHealthTriggerGREEN");
           }, timeout);
           break;
         default:
