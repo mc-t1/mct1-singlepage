@@ -22,6 +22,15 @@ var complete_chew_tid;
 var complete_drink_tid;
 var Mathz = {};
 
+$(document).ready(function() {
+  $('#test1').show();
+  function showModalInfo() {
+    console.log(document.getElementById('stats'));
+    document.getElementById('test1').style.display = 'block';
+  }
+});
+
+
 Mathz.round = function(number, precision) {
     var factor = Math.pow(10, precision);
     var tempNumber = number * factor;
@@ -34,6 +43,7 @@ var vue = new Vue({
   template: "#vueroot",
   data: function(){
     return {
+      showStats:false,
       configCarbsReferenceUnit: 15,
       configMinSafeBGL: 4,
       configMaxSafeBGL: 8,
@@ -86,7 +96,7 @@ var vue = new Vue({
     this.metabolism.carbsToBGLMagicNumber = this.metabolism.carbsPerInsulinUnit * this.metabolism.BGLCorrectionPerInsulinUnitMagicNumber;
     // Naively match carbs and insulin absorption - with a slight bias to carb absorption to allow recovery from lows
     // how many units of insulin are absorbed per cycle
-    this.metabolism.insulinAbsorptionRate = parseFloat(this.metabolism.carbsAbsorptionRate) / parseFloat(this.metabolism.carbsPerInsulinUnit) * 0.8; 
+    this.metabolism.insulinAbsorptionRate = parseFloat(this.metabolism.carbsAbsorptionRate) / parseFloat(this.metabolism.carbsPerInsulinUnit) * 0.8;
   },
   methods: {
     chewFood: function (food) {
@@ -517,5 +527,8 @@ var vue = new Vue({
           // Do Nothing
       }
     },
+    hideInfo: function() {
+      this.showStats = true;
+    }
   }
 });
