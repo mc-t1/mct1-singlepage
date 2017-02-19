@@ -324,7 +324,7 @@ var vue = new Vue({
         this.playerFoodValue = newFoodValue;
       }
 
-      var newCarbValue = parseInt(this.playerCarbsInStomach) + parseInt(this.currentFood.carbs);
+      var newCarbValue = parseInt(this.playerCarbsInStomach) + parseInt(this.currentFood.restoration);
       if (newCarbValue > 100) {
         this.playerCarbsInStomach = 100;
       } else {
