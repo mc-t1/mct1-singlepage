@@ -379,7 +379,7 @@ var vue = new Vue({
           color: lowColor,
           number: 300,
         };
-        flashColor = lowColor;
+        this.flashHealth('red');
       } else if (BGL < lowBGL) {
         startObj = {
           speed: 2,
@@ -387,7 +387,7 @@ var vue = new Vue({
           color: lowColor,
           number: 150,
         };
-        flashColor = lowColor;
+        this.flashHealth('red');
       } else if (BGL > extremeBGL) {
         startObj = {
           speed: 5,
@@ -395,7 +395,7 @@ var vue = new Vue({
           color: highColor,
           number: 400,
         };
-        flashColor = highColor;
+        this.flashHealth('green');
       } else if (BGL > veryHighBGL) {
         startObj = {
           speed: 3,
@@ -403,7 +403,7 @@ var vue = new Vue({
           color: highColor,
           number: 300,
         };
-        flashColor = highColor;
+        this.flashHealth('green');
       } else if (BGL > highBGL) {
         startObj = {
           speed: 1,
@@ -411,10 +411,10 @@ var vue = new Vue({
           color: highColor,
           number: 100,
         };
-        flashColor = highColor;
+        this.flashHealth('green');
       } else {
         stopBGL();
-        flashColor = undefined;
+        this.flashHealth(undefined);
       }
 
       if ((startObj.speed !== this.particlesObject.speed) || 
@@ -424,14 +424,24 @@ var vue = new Vue({
             this.particlesObject = startObj;
             // console.log("----------------------->THE OBJ", this.particlesObject);
             startBGL(this.particlesObject);
-            this.flashHealth();
       }
     },
     flashHealth: function(color) {
       if (!color) { return }
+      let timeout = Math.round(this.gameLoopInterval / 4);
+      if (timeout < 1000) { timeout = 1000; }
 
-      console.log('------------------------>Flash Colour: ', color);
-      
+      if (color === 'red') {
+        $(".flashHealth").toggleClass("flashHealthTriggerRED");
+        setTimeout(function() {
+          $(".flashHealth").toggleClass("flashHealthTriggerRED");
+        }, timeout);
+      } else {
+        $(".flashHealth").toggleClass("flashHealthTriggerGREEN");
+        setTimeout(function() {
+          $(".flashHealth").toggleClass("flashHealthTriggerGREEN");
+        }, timeout);
+      }
     },
   }
 });
