@@ -2,6 +2,7 @@ function startBGL(options) {
     var speed = options.speed || undefined;
     var size = options.size || undefined;
     var color = options.color || undefined;
+    var number = options.number || 100;
 
     // If no values return
     if (!speed || !size || !color) { return }
@@ -13,7 +14,7 @@ function startBGL(options) {
         color: color,
         sizeVariations: size,
         speed: speed,
-        maxParticles: 100,
+        maxParticles: number,
     };
 
     Particles.stop();
