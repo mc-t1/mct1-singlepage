@@ -118,7 +118,7 @@ var vue = new Vue({
     },
     startGameLoop: function () {
       console.log('this.gameLoopInterval', this.gameLoopInterval);
-      this.gameLoopTimer = setInterval(this.iterateExhaustion, this.gameLoopInterval);
+      this.gameLoopTimer = setTimeout(this.iterateExhaustion, this.gameLoopInterval);
     },
     stopGameLoop: function () {
       clearInterval(this.gameLoopTimer);
@@ -307,6 +307,10 @@ var vue = new Vue({
       })
       .draw();
 
+      if (this.gameLoopInterval  > 3000) {
+        this.gameLoopInterval -= 100;
+      }
+      this.gameLoopTimer = setTimeout(this.iterateExhaustion, this.gameLoopInterval);
     },
     eatFood: function(){
       var newFoodValue = parseInt(this.playerFoodValue) + parseInt(this.currentFood.restoration);
@@ -468,7 +472,8 @@ var vue = new Vue({
     },
 
     spellCast: function() {
-      //
+      console.log('rip');
+      this.playerHeartsValue -= 1;
     },
 
     flashHealth: function(color) {

@@ -65,7 +65,7 @@
                       <!-- {{playerHeartsValue}}/{{playerHeartsMax}} -->
                     </div>
                     <div class="col-xs-6" id="plr-food-value">
-                      <label> Player food: </label>
+                      <label> Player food: {{this.gameLoopInterval}} </label>
                       <div class="plr-hunger-bar">
                         <div class="plr-hunger-bar--overlay" v-bind:style="{ width: (playerFoodValue * 10) + 'px' }"></div>
                       </div>
@@ -131,7 +131,7 @@
                   </div>
                   <div id="cast-spell" class="col-sm-4">
                     <h2>Cast Spell</h2>
-                    <div class="cast-spell-icon" v-on:click="spellCast">Volare!</div>
+                    <button class="cast-spell-icon" v-on:click="spellCast">Volare!</button>
                 </div>
               </div>
           </div>
