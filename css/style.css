@@ -19,6 +19,30 @@ body {
   background-color: #999;
   position: relative;
 }
+.flashHealth {
+  /*opacity: 0.3;
+  position: fixed;
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+  z-index: 1;*/
+}
+.flashHealthTriggerRED {
+  opacity: 0;
+  background-color: darkred;
+  -webkit-transition: opacity 0.8s ease;
+  -moz-transition: opacity 0.8s ease;
+  -o-transition: opacity 0.8s ease;
+  transition: opacity 0.8s ease;
+}
+.flashHealthTriggerGREEN {
+  opacity: 0;
+  background-color: green;
+  -webkit-transition: opacity 0.8s ease;
+  -moz-transition: opacity 0.8s ease;
+  -o-transition: opacity 0.8s ease;
+  transition: opacity 0.8s ease;
+}
 #heart-nav {
   background-image: url("../img/Heart.svg");
   background-repeat: repeat-x;
