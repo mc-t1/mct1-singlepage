@@ -97,6 +97,7 @@ var vue = new Vue({
     // Naively match carbs and insulin absorption - with a slight bias to carb absorption to allow recovery from lows
     // how many units of insulin are absorbed per cycle
     this.metabolism.insulinAbsorptionRate = parseFloat(this.metabolism.carbsAbsorptionRate) / parseFloat(this.metabolism.carbsPerInsulinUnit) * 0.8;
+
   },
   methods: {
     chewFood: function (food) {
@@ -224,7 +225,7 @@ var vue = new Vue({
           // Here glucose that was not absorbed remains in the blood and raises blood glucose level
           var excessCarbs = carbsAbsorbingIntoBloodstream - carbsThatWereMetabolised;
           this.playerBGLValue = this.playerBGLValue + (excessCarbs / this.metabolism.carbsToBGLMagicNumber);
-          console.log(`I have ${Mathz.round(excessCarbs, 0)} in my bloodstream now`);
+          console.log(`I have ${Mathz.round(excessCarbs, 0)} carbs in my bloodstream now`);
       }
 
       if (insulinAbsorbed === insulinNeededToMetaboliseCarbsInBloodstream) {
@@ -428,7 +429,7 @@ var vue = new Vue({
       var highColor = '#00ff00';
       var startObj = {};
 
-      if ((BGL < veryLowBGL) || isNaN(BGL)) {
+      if ((BGL <= veryLowBGL) || isNaN(BGL)) {
         startObj = {
           speed: 5,
           size: 15,
@@ -460,7 +461,7 @@ var vue = new Vue({
           number: 300,
         };
         this.flashHealth('greenDark');
-      } else if (BGL > highBGL) {
+      } else if (BGL >= highBGL) {
         startObj = {
           speed: 1,
           size: 5,
@@ -488,39 +489,41 @@ var vue = new Vue({
     },
 
     flashHealth: function(color) {
-      let timeout = Math.round(this.gameLoopInterval / 4);
-      if (timeout < 1000) { timeout = 1000; }
-
+      if (this.playerIsDead) { return; }
+      // let timeout = Math.round(this.gameLoopInterval / 4);
+      //if (timeout < 1000) { timeout = 1000; }
+      let timeout = 500;
 
       switch(color) {
         case 'redDark':
-          $(".flashHealth").toggleClass("flashHealthTriggerRED");
+          $(".flashHealth").addClass("flashHealthTriggerRED");
           setTimeout(function() {
-            $(".flashHealth").toggleClass("flashHealthTriggerRED");
+            $(".flashHealth").removeClass("flashHealthTriggerRED");
           }, timeout);
           break;
         case 'redLight':
-          $(".flashHealth").toggleClass("flashHealthTriggerRED");
+
+          $(".flashHealth").addClass("flashHealthTriggerRED");
           setTimeout(function() {
-            $(".flashHealth").toggleClass("flashHealthTriggerRED");
+            $(".flashHealth").removeClass("flashHealthTriggerRED");
           }, timeout);
           break;
         case 'greenLight':
-          $(".flashHealth").toggleClass("flashHealthTriggerGREEN");
+          $(".flashHealth").addClass("flashHealthTriggerGREEN");
           setTimeout(function() {
-            $(".flashHealth").toggleClass("flashHealthTriggerGREEN");
+            $(".flashHealth").removeClass("flashHealthTriggerGREEN");
           }, timeout);
           break;
         case 'greenDark':
-          $(".flashHealth").toggleClass("flashHealthTriggerGREEN");
+          $(".flashHealth").addClass("flashHealthTriggerGREEN");
           setTimeout(function() {
-            $(".flashHealth").toggleClass("flashHealthTriggerGREEN");
+            $(".flashHealth").removeClass("flashHealthTriggerGREEN");
           }, timeout);
           break;
         case 'greenDeathly':
-          $(".flashHealth").toggleClass("flashHealthTriggerGREEN");
+          $(".flashHealth").addClass("flashHealthTriggerGREEN");
           setTimeout(function() {
-            $(".flashHealth").toggleClass("flashHealthTriggerGREEN");
+            $(".flashHealth").removeClass("flashHealthTriggerGREEN");
           }, timeout);
           break;
         default:
