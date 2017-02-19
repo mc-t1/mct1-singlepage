@@ -86,7 +86,7 @@ var vue = new Vue({
     this.metabolism.carbsToBGLMagicNumber = this.metabolism.carbsPerInsulinUnit * this.metabolism.BGLCorrectionPerInsulinUnitMagicNumber;
     // Naively match carbs and insulin absorption - with a slight bias to carb absorption to allow recovery from lows
     // how many units of insulin are absorbed per cycle
-    this.metabolism.insulinAbsorptionRate = parseFloat(this.metabolism.carbsAbsorptionRate) / parseFloat(this.metabolism.carbsPerInsulinUnit) * 0.8; 
+    this.metabolism.insulinAbsorptionRate = parseFloat(this.metabolism.carbsAbsorptionRate) / parseFloat(this.metabolism.carbsPerInsulinUnit); 
   },
   methods: {
     chewFood: function (food) {
@@ -214,7 +214,7 @@ var vue = new Vue({
           // Here glucose that was not absorbed remains in the blood and raises blood glucose level
           var excessCarbs = carbsAbsorbingIntoBloodstream - carbsThatWereMetabolised;
           this.playerBGLValue = this.playerBGLValue + (excessCarbs / this.metabolism.carbsToBGLMagicNumber);
-          console.log(`I have ${Mathz.round(excessCarbs, 0)} in my bloodstream now`);
+          console.log(`I have ${Mathz.round(excessCarbs, 0)} carbs in my bloodstream now`);
       }
 
       if (insulinAbsorbed === insulinNeededToMetaboliseCarbsInBloodstream) {
