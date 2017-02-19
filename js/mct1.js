@@ -235,7 +235,7 @@ var vue = new Vue({
         } else {
           this.playerHeartsValue = newHeartsValue;
         }
-        this.playerHeartsValue += carbsConvertedToHealth;
+
 
         // Insulin absorbed above the carb absorption causes the Blood Glucose Level to drop
         var excessInsulin = insulinAbsorbed - (carbsConvertedToHealth / this.metabolism.carbsPerInsulinUnit);
@@ -477,7 +477,7 @@ var vue = new Vue({
     flashHealth: function(color) {
       let timeout = Math.round(this.gameLoopInterval / 4);
       if (timeout < 1000) { timeout = 1000; }
-      
+
       if (color === 'red') {
         $(".flashHealth").toggleClass("flashHealthTriggerRED");
         setTimeout(function() {
