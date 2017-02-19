@@ -151,6 +151,12 @@ body {
 
 
 
+.gameover-playagain {
+  cursor: pointer;
+}
+.gameover-playagain:hover {
+  text-decoration: none;
+}
 
 .plr-avatar-img {
   padding:45px 10px;
