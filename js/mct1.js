@@ -124,7 +124,7 @@ var vue = new Vue({
     },
     startGameLoop: function () {
       console.log('this.gameLoopInterval', this.gameLoopInterval);
-      this.gameLoopTimer = setInterval(this.iterateExhaustion, this.gameLoopInterval);
+      this.gameLoopTimer = setTimeout(this.iterateExhaustion, this.gameLoopInterval);
     },
     stopGameLoop: function () {
       clearInterval(this.gameLoopTimer);
@@ -135,6 +135,7 @@ var vue = new Vue({
       // Naively match carbs and insulin absorption - with a slight bias to carb absorption to allow recovery from lows
       // how many units of insulin are absorbed per cycle
       this.metabolism.insulinAbsorptionRate = parseFloat(this.metabolism.carbsAbsorptionRate) / parseFloat(this.metabolism.carbsPerInsulinUnit); 
+
       var carbsAbsorbingIntoBloodstream;
       var insulinAbsorbed;
 
@@ -298,6 +299,10 @@ var vue = new Vue({
       })
       .draw();
 
+      if (this.gameLoopInterval  > 3000) {
+        this.gameLoopInterval -= 100;
+      }
+      this.gameLoopTimer = setTimeout(this.iterateExhaustion, this.gameLoopInterval);
     },
     eatFood: function(){
       var newFoodValue = parseInt(this.playerFoodValue) + parseInt(this.currentFood.restoration);
@@ -401,7 +406,6 @@ var vue = new Vue({
       var lowColor = '#ff0000';
       var highColor = '#00ff00';
       var startObj = {};
-      var flashColor = undefined;
 
       if ((BGL < veryLowBGL) || isNaN(BGL)) {
         startObj = {
@@ -410,7 +414,7 @@ var vue = new Vue({
           color: lowColor,
           number: 300,
         };
-        this.flashHealth('red');
+        this.flashHealth('redDark');
       } else if (BGL < lowBGL) {
         startObj = {
           speed: 2,
@@ -418,7 +422,7 @@ var vue = new Vue({
           color: lowColor,
           number: 150,
         };
-        this.flashHealth('red');
+        this.flashHealth('redLight');
       } else if (BGL > extremeBGL) {
         startObj = {
           speed: 5,
@@ -426,7 +430,7 @@ var vue = new Vue({
           color: highColor,
           number: 400,
         };
-        this.flashHealth('green');
+        this.flashHealth('greenLight');
       } else if (BGL > veryHighBGL) {
         startObj = {
           speed: 3,
@@ -434,7 +438,7 @@ var vue = new Vue({
           color: highColor,
           number: 300,
         };
-        this.flashHealth('green');
+        this.flashHealth('greenDark');
       } else if (BGL > highBGL) {
         startObj = {
           speed: 1,
@@ -442,10 +446,9 @@ var vue = new Vue({
           color: highColor,
           number: 100,
         };
-        this.flashHealth('green');
+        this.flashHealth('greenDeathly');
       } else {
         stopBGL();
-        this.flashHealth(undefined);
       }
 
       if ((startObj.speed !== this.particlesObject.speed) ||
@@ -459,24 +462,47 @@ var vue = new Vue({
     },
 
     spellCast: function() {
-      //
+      console.log('rip');
+      this.playerHeartsValue -= 1;
     },
 
     flashHealth: function(color) {
-      if (!color) { return }
       let timeout = Math.round(this.gameLoopInterval / 4);
       if (timeout < 1000) { timeout = 1000; }
-
-      if (color === 'red') {
-        $(".flashHealth").toggleClass("flashHealthTriggerRED");
-        setTimeout(function() {
+      
+      switch(color) {
+        case 'redDark':
           $(".flashHealth").toggleClass("flashHealthTriggerRED");
-        }, timeout);
-      } else {
-        $(".flashHealth").toggleClass("flashHealthTriggerGREEN");
-        setTimeout(function() {
+          setTimeout(function() {
+            $(".flashHealth").toggleClass("flashHealthTriggerRED");
+          }, timeout);
+          break;
+        case 'redLight':
+          $(".flashHealth").toggleClass("flashHealthTriggerRED");
+          setTimeout(function() {
+            $(".flashHealth").toggleClass("flashHealthTriggerRED");
+          }, timeout);
+          break;
+        case 'greenLight':
           $(".flashHealth").toggleClass("flashHealthTriggerGREEN");
-        }, timeout);
+          setTimeout(function() {
+            $(".flashHealth").toggleClass("flashHealthTriggerGREEN");
+          }, timeout);
+          break;
+        case 'greenDark':
+          $(".flashHealth").toggleClass("flashHealthTriggerGREEN");
+          setTimeout(function() {
+            $(".flashHealth").toggleClass("flashHealthTriggerGREEN");
+          }, timeout);
+          break;
+        case 'greenDeathly':
+          $(".flashHealth").toggleClass("flashHealthTriggerGREEN");
+          setTimeout(function() {
+            $(".flashHealth").toggleClass("flashHealthTriggerGREEN");
+          }, timeout);
+          break;
+        default:
+          // Do Nothing
       }
     },
   }
