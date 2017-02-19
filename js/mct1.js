@@ -415,23 +415,23 @@ var vue = new Vue({
       var veryHighBGL = 13;
       var extremeBGL = 15;
       var lowColor = '#ff0000';
-      var highColor = '#00ff00';
+      var highColor = '#ff00eb';
       var startObj = {};
 
       if ((BGL <= veryLowBGL) || isNaN(BGL)) {
         startObj = {
-          speed: 5,
-          size: 15,
+          speed: 15,
+          size: 20,
           color: lowColor,
-          number: 300,
+          number: 400,
         };
         this.flashHealth('redDark');
       } else if (BGL < lowBGL) {
         startObj = {
-          speed: 2,
+          speed: 7,
           size: 10,
           color: lowColor,
-          number: 150,
+          number: 200,
         };
         this.flashHealth('redLight');
       } else if (BGL > extremeBGL) {
@@ -485,34 +485,33 @@ var vue = new Vue({
 
       switch(color) {
         case 'redDark':
-          $(".flashHealth").addClass("flashHealthTriggerRED");
+          $(".flashHealth").addClass("flashHealthTrigger-DARKRED");
           setTimeout(function() {
-            $(".flashHealth").removeClass("flashHealthTriggerRED");
+            $(".flashHealth").removeClass("flashHealthTrigger-DARKRED");
           }, timeout);
           break;
         case 'redLight':
-
-          $(".flashHealth").addClass("flashHealthTriggerRED");
+          $(".flashHealth").addClass("flashHealthTrigger-LIGHTRED");
           setTimeout(function() {
-            $(".flashHealth").removeClass("flashHealthTriggerRED");
+            $(".flashHealth").removeClass("flashHealthTrigger-LIGHTRED");
           }, timeout);
           break;
         case 'greenLight':
-          $(".flashHealth").addClass("flashHealthTriggerGREEN");
+          $(".flashHealth").addClass("flashHealthTrigger-PURPLE");
           setTimeout(function() {
-            $(".flashHealth").removeClass("flashHealthTriggerGREEN");
+            $(".flashHealth").removeClass("flashHealthTrigger-PURPLE");
           }, timeout);
           break;
         case 'greenDark':
-          $(".flashHealth").addClass("flashHealthTriggerGREEN");
+          $(".flashHealth").addClass("flashHealthTrigger-PURPLE");
           setTimeout(function() {
-            $(".flashHealth").removeClass("flashHealthTriggerGREEN");
+            $(".flashHealth").removeClass("flashHealthTrigger-PURPLE");
           }, timeout);
           break;
         case 'greenDeathly':
-          $(".flashHealth").addClass("flashHealthTriggerGREEN");
+          $(".flashHealth").addClass("flashHealthTrigger-PURPLE");
           setTimeout(function() {
-            $(".flashHealth").removeClass("flashHealthTriggerGREEN");
+            $(".flashHealth").removeClass("flashHealthTrigger-PURPLE");
           }, timeout);
           break;
         default:
