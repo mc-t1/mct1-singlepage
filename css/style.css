@@ -27,7 +27,23 @@ body {
   height: 100%;
   z-index: 1;
 }
-.flashHealthTriggerRED {
+.flashHealthTrigger-ZEROED {
+  opacity: 0.5;
+  background-color: #000000;
+  -webkit-transition: opacity 0.8s ease;
+  -moz-transition: opacity 0.8s ease;
+  -o-transition: opacity 0.8s ease;
+  transition: opacity 0.8s ease;
+}
+.flashHealthTrigger-LIGHTRED {
+  opacity: 0;
+  background-color: indianred;
+  -webkit-transition: opacity 0.8s ease;
+  -moz-transition: opacity 0.8s ease;
+  -o-transition: opacity 0.8s ease;
+  transition: opacity 0.8s ease;
+}
+.flashHealthTrigger-DARKRED {
   opacity: 0;
   background-color: darkred;
   -webkit-transition: opacity 0.8s ease;
@@ -35,9 +51,9 @@ body {
   -o-transition: opacity 0.8s ease;
   transition: opacity 0.8s ease;
 }
-.flashHealthTriggerGREEN {
+.flashHealthTrigger-PURPLE {
   opacity: 0;
-  background-color: green;
+  background-color: #ff00eb;
   -webkit-transition: opacity 0.8s ease;
   -moz-transition: opacity 0.8s ease;
   -o-transition: opacity 0.8s ease;
