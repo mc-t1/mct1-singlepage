@@ -20,7 +20,7 @@ function startBGL(options) {
     Particles.stop();
     setTimeout(function() {
         Particles.init( options ); 
-    }, 70)
+    }, 100)
     
     // var numberOfParticles = 0;
     // if (Particles && Particles.storage && (Particles.storage.length === numberOfParticles)) {

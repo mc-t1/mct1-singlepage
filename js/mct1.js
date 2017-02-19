@@ -414,7 +414,6 @@ var vue = new Vue({
       var lowColor = '#ff0000';
       var highColor = '#00ff00';
       var startObj = {};
-      var flashColor = undefined;
 
       if ((BGL < veryLowBGL) || isNaN(BGL)) {
         startObj = {
@@ -458,7 +457,6 @@ var vue = new Vue({
         this.flashHealth('green');
       } else {
         stopBGL();
-        this.flashHealth(undefined);
       }
 
       if ((startObj.speed !== this.particlesObject.speed) ||
@@ -477,10 +475,9 @@ var vue = new Vue({
     },
 
     flashHealth: function(color) {
-      if (!color) { return }
       let timeout = Math.round(this.gameLoopInterval / 4);
       if (timeout < 1000) { timeout = 1000; }
-
+      
       if (color === 'red') {
         $(".flashHealth").toggleClass("flashHealthTriggerRED");
         setTimeout(function() {
