@@ -260,3 +260,7 @@ padding:0;
 .food-list li img {
   width:100px;
 }
+
+#test1 {
+  display:none;
+}
