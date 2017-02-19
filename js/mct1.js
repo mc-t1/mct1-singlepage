@@ -136,6 +136,7 @@ var vue = new Vue({
     },
     iterateExhaustion: function () {
 
+
       var carbsAbsorbingIntoBloodstream;
       var insulinAbsorbed;
 
@@ -226,6 +227,18 @@ var vue = new Vue({
         if (this.playerBGLValue < 8) {
           console.log(`I absorbed too much insulin in this tick`);
         }
+        console.log(`I have ${carbsAbsorbingIntoBloodstream} grams of carbs in my bloodstream`);
+
+        // Glucose is absorbed from the bloodstream into the cells, providing health
+        // Absorption of glucose into cells is proportional to insulin absorbed
+        var carbsConvertedToHealth = carbsAbsorbingIntoBloodstream * this.metabolism.carbsToHealthMagicNumber;
+        var newHeartsValue = this.playerHeartsValue + carbsConvertedToHealth;
+        if (newHeartsValue > 20) {
+          this.playerHeartsValue = 20;
+        } else {
+          this.playerHeartsValue = newHeartsValue;
+        }
+
         console.log(`I have ${Mathz.round(carbsAbsorbingIntoBloodstream, 0)} grams of carbs in my bloodstream`);
 
         // Insulin absorbed above the carb absorption causes the Blood Glucose Level to drop
@@ -310,7 +323,7 @@ var vue = new Vue({
         this.playerFoodValue = newFoodValue;
       }
 
-      var newCarbValue = parseInt(this.playerCarbsInStomach) + parseInt(this.currentFood.carbs);
+      var newCarbValue = parseInt(this.playerCarbsInStomach) + parseInt(this.currentFood.restoration);
       if (newCarbValue > 100) {
         this.playerCarbsInStomach = 100;
       } else {
@@ -467,7 +480,8 @@ var vue = new Vue({
     flashHealth: function(color) {
       let timeout = Math.round(this.gameLoopInterval / 4);
       if (timeout < 1000) { timeout = 1000; }
-      
+
+
       switch(color) {
         case 'redDark':
           $(".flashHealth").toggleClass("flashHealthTriggerRED");
