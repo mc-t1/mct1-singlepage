@@ -18,6 +18,7 @@
 body {
   background-color: #999;
   position: relative;
+  font-family: 'VT323', monospace;
 }
 .flashHealth {
   opacity: 0.3;
