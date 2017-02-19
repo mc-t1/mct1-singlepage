@@ -422,7 +422,7 @@ var vue = new Vue({
           color: lowColor,
           number: 300,
         };
-        this.flashHealth('red');
+        this.flashHealth('redDark');
       } else if (BGL < lowBGL) {
         startObj = {
           speed: 2,
@@ -430,7 +430,7 @@ var vue = new Vue({
           color: lowColor,
           number: 150,
         };
-        this.flashHealth('red');
+        this.flashHealth('redLight');
       } else if (BGL > extremeBGL) {
         startObj = {
           speed: 5,
@@ -438,7 +438,7 @@ var vue = new Vue({
           color: highColor,
           number: 400,
         };
-        this.flashHealth('green');
+        this.flashHealth('greenLight');
       } else if (BGL > veryHighBGL) {
         startObj = {
           speed: 3,
@@ -446,7 +446,7 @@ var vue = new Vue({
           color: highColor,
           number: 300,
         };
-        this.flashHealth('green');
+        this.flashHealth('greenDark');
       } else if (BGL > highBGL) {
         startObj = {
           speed: 1,
@@ -454,7 +454,7 @@ var vue = new Vue({
           color: highColor,
           number: 100,
         };
-        this.flashHealth('green');
+        this.flashHealth('greenDeathly');
       } else {
         stopBGL();
       }
@@ -478,16 +478,40 @@ var vue = new Vue({
       let timeout = Math.round(this.gameLoopInterval / 4);
       if (timeout < 1000) { timeout = 1000; }
 
-      if (color === 'red') {
-        $(".flashHealth").toggleClass("flashHealthTriggerRED");
-        setTimeout(function() {
+
+      switch(color) {
+        case 'redDark':
           $(".flashHealth").toggleClass("flashHealthTriggerRED");
-        }, timeout);
-      } else {
-        $(".flashHealth").toggleClass("flashHealthTriggerGREEN");
-        setTimeout(function() {
+          setTimeout(function() {
+            $(".flashHealth").toggleClass("flashHealthTriggerRED");
+          }, timeout);
+          break;
+        case 'redLight':
+          $(".flashHealth").toggleClass("flashHealthTriggerRED");
+          setTimeout(function() {
+            $(".flashHealth").toggleClass("flashHealthTriggerRED");
+          }, timeout);
+          break;
+        case 'greenLight':
           $(".flashHealth").toggleClass("flashHealthTriggerGREEN");
-        }, timeout);
+          setTimeout(function() {
+            $(".flashHealth").toggleClass("flashHealthTriggerGREEN");
+          }, timeout);
+          break;
+        case 'greenDark':
+          $(".flashHealth").toggleClass("flashHealthTriggerGREEN");
+          setTimeout(function() {
+            $(".flashHealth").toggleClass("flashHealthTriggerGREEN");
+          }, timeout);
+          break;
+        case 'greenDeathly':
+          $(".flashHealth").toggleClass("flashHealthTriggerGREEN");
+          setTimeout(function() {
+            $(".flashHealth").toggleClass("flashHealthTriggerGREEN");
+          }, timeout);
+          break;
+        default:
+          // Do Nothing
       }
     },
   }
