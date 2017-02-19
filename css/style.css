@@ -11,6 +11,11 @@
   color: #00FF00;
 }
 
+#cast-spell {
+  text-align: center;
+  margin:10px;
+}
+
 .feedback-item:hover {
   color: lightgreen;
   background-color: #000;
