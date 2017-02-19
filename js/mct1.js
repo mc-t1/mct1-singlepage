@@ -127,7 +127,7 @@ var vue = new Vue({
       this.metabolism.carbsToBGLMagicNumber = this.metabolism.carbsPerInsulinUnit * this.metabolism.BGLCorrectionPerInsulinUnitMagicNumber; 
       // Naively match carbs and insulin absorption
       // how many units of insulin are absorbed per cycle
-      this.metabolism.insulinAbsorptionRate = this.carbsAbsorptionRate / this.carbsPerInsulinUnit; 
+      this.metabolism.insulinAbsorptionRate = this.metabolism.carbsAbsorptionRate / this.metabolism.carbsPerInsulinUnit; 
       var carbsAbsorbingIntoBloodstream;
       var insulinAbsorbed;
 
