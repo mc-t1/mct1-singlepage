@@ -20,12 +20,12 @@ body {
   position: relative;
 }
 .flashHealth {
-  /*opacity: 0.3;
+  opacity: 0.3;
   position: fixed;
   pointer-events: none;
   width: 100%;
   height: 100%;
-  z-index: 1;*/
+  z-index: 1;
 }
 .flashHealthTriggerRED {
   opacity: 0;
