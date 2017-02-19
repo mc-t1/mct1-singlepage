@@ -1,6 +1,4 @@
 
-
-
 //TODO add in checks for max and min values in formula
 // remove tombstone add gameover instead, restart
 
@@ -22,6 +20,15 @@ var images = [];
 // var drink_audio;
 var complete_chew_tid;
 var complete_drink_tid;
+var Mathz = {};
+
+Mathz.round = function(number, precision) {
+    var factor = Math.pow(10, precision);
+    var tempNumber = number * factor;
+    var roundedTempNumber = Math.round(tempNumber);
+    return roundedTempNumber / factor;
+};
+
 var vue = new Vue({
   el: "#app",
   template: "#vueroot",
@@ -60,15 +67,14 @@ var vue = new Vue({
       insulineDoseUnits:5,
       currentFoodValue: 0,
       metabolism: {
-        carbsAbsorptionRate:2, // how many carbs are absorbed per tick
-        carbsPerInsulinUnit:7.5, // how many grams of carbs are metabolise per insulin unit
-        carbsToHealthMagicNumber:20, // how many carbs convert to 1 unit of player health when metabolise; 0-20 health range
-        BGLCorrectionPerInsulinUnitMagicNumber:2, // how many BGL points drop per one unit of insulin without carbs
-        carbsToEnergyHealthNumber: 1,
+        carbsAbsorptionRate: 2, // how many carbs are absorbed per tick
+        carbsPerInsulinUnit: 7.5, // how many grams of carbs are metabolise per insulin unit
+        carbsToHealthMagicNumber: 20, // how many carbs convert to 1 unit of player health when metabolise; 0-20 health range
+        BGLCorrectionPerInsulinUnitMagicNumber: 1, // how many BGL points drop per one unit of insulin without carbs
         // *Computed at run-time
         carbsToBGLMagicNumber: 1, // how many carbs convert to one point of BGL when unmetabolised
         // *Computed at run-time
-        insulinAbsorptionRate: 1, // how many units of insulin are absorbed per cycle
+        insulinAbsorptionRate: 2, // how many units of insulin are absorbed per cycle
       },
       particlesObject: {speed: 0, size: 0, color: ''},
 
@@ -126,13 +132,9 @@ var vue = new Vue({
     iterateExhaustion: function () {
       // how many carbs convert to one point of BGL when unmetabolised
       this.metabolism.carbsToBGLMagicNumber = this.metabolism.carbsPerInsulinUnit * this.metabolism.BGLCorrectionPerInsulinUnitMagicNumber;
-      // Naively match carbs and insulin absorption
+      // Naively match carbs and insulin absorption - with a slight bias to carb absorption to allow recovery from lows
       // how many units of insulin are absorbed per cycle
-<<<<<<< HEAD
-      this.metabolism.insulinAbsorptionRate = this.metabolism.carbsAbsorptionRate / this.metabolism.carbsPerInsulinUnit; 
-=======
-      this.metabolism.insulinAbsorptionRate = this.carbsAbsorptionRate / this.carbsPerInsulinUnit;
->>>>>>> d14d11b175aab03f40127890390dfdb1db779fae
+      this.metabolism.insulinAbsorptionRate = parseFloat(this.metabolism.carbsAbsorptionRate) / parseFloat(this.metabolism.carbsPerInsulinUnit); 
       var carbsAbsorbingIntoBloodstream;
       var insulinAbsorbed;
 
@@ -144,7 +146,7 @@ var vue = new Vue({
 
 
       if ((this.playerBGLValue < lowerBoundHealthyBGL) || isNaN(this.playerBGLValue)) {
-        console.log('BGL too low: ', this.playerBGLValue);
+        console.log('BGL too low: ', Mathz.round(this.playerBGLValue, 1));
       this.calculateParticleEffects(this.playerBGLValue);
       } else {
         console.log('BGL NORMAL: ', this.playerBGLValue);
@@ -161,21 +163,21 @@ var vue = new Vue({
       stats.carbsOnBoard = this.playerCarbsInStomach;
       stats.carbsAbsorption = carbsAbsorbingIntoBloodstream;
       console.log(`I started with ${this.playerCarbsInStomach} grams of carbs in my stomach`);
-      console.log(`I am absorbing ${carbsAbsorbingIntoBloodstream} grams of carbs into my bloodstream`);
+      console.log(`I am absorbing ${Mathz.round(carbsAbsorbingIntoBloodstream, 0)} grams of carbs into my bloodstream`);
 
       this.playerCarbsInStomach -= carbsAbsorbingIntoBloodstream;
 
       // Absorb insulin
       if (this.playerInsulinInSystem - this.metabolism.insulinAbsorptionRate > 0) {
-          insulinAbsorbed = this.playerInsulinInSystem - this.metabolism.insulinAbsorptionRate;
+          insulinAbsorbed = this.metabolism.insulinAbsorptionRate;
       } else {
           insulinAbsorbed = this.playerInsulinInSystem;
       }
 
       stats.insulinOnboard = this.playerInsulinInSystem;
       stats.insulinAbsorption = insulinAbsorbed;
-      console.log(`I started with ${this.playerInsulinInSystem} units of insulin in my system`);
-      console.log(`I am absorbing ${insulinAbsorbed} units of insulin`);
+      console.log(`I started with ${Mathz.round(this.playerInsulinInSystem, 0)} units of insulin in my system`);
+      console.log(`I am absorbing ${Mathz.round(insulinAbsorbed, 1)} units of insulin`);
 
       this.playerInsulinInSystem -= insulinAbsorbed;
 
@@ -183,8 +185,24 @@ var vue = new Vue({
 
       var insulinNeededToMetaboliseCarbsInBloodstream = (carbsAbsorbingIntoBloodstream / this.metabolism.carbsPerInsulinUnit);
 
-      console.log(`I need to absorb ${insulinNeededToMetaboliseCarbsInBloodstream} units of insulin to remain neutral BGL`);
+      var percentageOfCarbsAbsorbedToHealth = (insulinNeededToMetaboliseCarbsInBloodstream === 0) ? 0 : insulinAbsorbed / insulinNeededToMetaboliseCarbsInBloodstream;
+      if (percentageOfCarbsAbsorbedToHealth > 1) {
+        percentageOfCarbsAbsorbedToHealth = 1;
+      }
 
+      // Glucose is absorbed from the bloodstream into the cells, providing health
+      // Absorption of glucose into cells is proportional to insulin absorbed
+      var carbsThatWereMetabolised = (carbsAbsorbingIntoBloodstream * percentageOfCarbsAbsorbedToHealth);
+      var healthImpact = carbsThatWereMetabolised * this.metabolism.carbsToHealthMagicNumber;
+
+      console.log(`I need to absorb ${Mathz.round(insulinNeededToMetaboliseCarbsInBloodstream, 1)} units of insulin to remain neutral BGL`);
+
+      var newHeartsValue = this.playerHeartsValue + healthImpact;
+      if (newHeartsValue > this.playerHeartsMax) {
+        this.playerHeartsValue = this.playerHeartsMax;
+      } else {
+        this.playerHeartsValue = newHeartsValue;
+      }
       // Calculate and apply insulin and carbs interaction to health
 
       if (insulinAbsorbed < insulinNeededToMetaboliseCarbsInBloodstream) { // BGL will rise
@@ -193,34 +211,15 @@ var vue = new Vue({
           } else {
             console.log(`I didn't absorb enough insulin`);
           }
-          // Glucose is absorbed from the bloodstream into the cells, providing health
-          // Absorption of glucose into cells is proportional to insulin absorbed
-
-          var carbsConvertedToHealth = this.metabolism.carbsPerInsulinUnit * insulinAbsorbed;
-          var newHeartsValue = this.playerHeartsValue + (carbsConvertedToHealth / this.metabolism.carbsToHealthMagicNumber);
-          if (newHeartsValue > this.playerHeartsMax) {
-            this.playerHeartsValue = this.playerHeartsMax;
-          } else {
-            this.playerHeartsValue = newHeartsValue;
-          }
-
-
           // Here glucose that was not absorbed remains in the blood and raises blood glucose level
-          var excessCarbs = carbsAbsorbingIntoBloodstream - carbsConvertedToHealth;
+          var excessCarbs = carbsAbsorbingIntoBloodstream - carbsThatWereMetabolised;
           this.playerBGLValue = this.playerBGLValue + (excessCarbs / this.metabolism.carbsToBGLMagicNumber);
-          console.log(`I have ${excessCarbs} in my bloodstream now`);
+          console.log(`I have ${Mathz.round(excessCarbs, 0)} in my bloodstream now`);
       }
 
       if (insulinAbsorbed === insulinNeededToMetaboliseCarbsInBloodstream) {
         if (insulinNeededToMetaboliseCarbsInBloodstream !== 0) {
           console.log('That was just the right amount!');
-          var carbsConvertedToHealth = carbsAbsorbingIntoBloodstream * this.metabolism.carbsToHealthMagicNumber;
-          var newHeartsValue = this.playerHeartsValue + (carbsConvertedToHealth);
-          if (newHeartsValue > 20) {
-            this.playerHeartsValue = 20;
-          } else {
-            this.playerHeartsValue = newHeartsValue;
-          }
         }
       }
 
@@ -228,21 +227,10 @@ var vue = new Vue({
         if (this.playerBGLValue < 8) {
           console.log(`I absorbed too much insulin in this tick`);
         }
-        console.log(`I have ${carbsAbsorbingIntoBloodstream} grams of carbs in my bloodstream`);
-
-        // Glucose is absorbed from the bloodstream into the cells, providing health
-        // Absorption of glucose into cells is proportional to insulin absorbed
-        var carbsConvertedToHealth = carbsAbsorbingIntoBloodstream * this.metabolism.carbsToHealthMagicNumber;
-        var newHeartsValue = this.playerHeartsValue + carbsConvertedToHealth;
-        if (newHeartsValue > 20) {
-          this.playerHeartsValue = 20;
-        } else {
-          this.playerHeartsValue = newHeartsValue;
-        }
-        this.playerHeartsValue += carbsConvertedToHealth;
+        console.log(`I have ${Mathz.round(carbsAbsorbingIntoBloodstream, 0)} grams of carbs in my bloodstream`);
 
         // Insulin absorbed above the carb absorption causes the Blood Glucose Level to drop
-        var excessInsulin = insulinAbsorbed - (carbsConvertedToHealth / this.metabolism.carbsPerInsulinUnit);
+        var excessInsulin = insulinAbsorbed - (carbsThatWereMetabolised / this.metabolism.carbsPerInsulinUnit);
         var oldBGLValue = this.playerBGLValue;
 
         var newBGLValue = this.playerBGLValue - (excessInsulin * this.metabolism.BGLCorrectionPerInsulinUnitMagicNumber);
@@ -252,21 +240,20 @@ var vue = new Vue({
         } else {
           this.playerBGLValue = newBGLValue;
         }
-        console.log(`My BGL went from ${oldBGLValue} to ${newBGLValue}`);
+        console.log(`My BGL went from ${Mathz.round(oldBGLValue,1)} to ${Mathz.round(newBGLValue, 1)}`);
 
         if (this.playerBGLValue < this.lowerBoundHealthyBGL) {
           // Insulin used to metabolise carbs that were absorbed this tick
-          var insulinUsedToMetaboliseCarbsThisTick = (carbsConvertedToHealth / this.metabolism.carbsPerInsulinUnit);
+          var insulinUsedToMetaboliseCarbsThisTick = (carbsThatWereMetabolised / this.metabolism.carbsPerInsulinUnit);
           // Insulin used to reduce BGL into the health range in this tick
           var insulinUsedToReduceBGLWithinRangeThisTick = (oldBGLValue - upperBoundHealthyBGL) / this.metabolism.carbsPerInsulinUnit;
           // This is the amount of insulin that was "too much" to absorb in this tick
           var excessInsulin = insulinAbsorbed - (insulinUsedToMetaboliseCarbsThisTick + insulinUsedToReduceBGLWithinRangeThisTick);
 
-          console.log(`I absorbed ${excessInsulin} units above my requirement`);
+          console.log(`I absorbed ${Mathz.round(excessInsulin, 0)} units above my requirement`);
         }
-        console.log(` ${excessInsulin} `);
       }
-      console.log(`My BGL is ${this.playerBGLValue}`);
+      console.log(`My BGL is ${Mathz.round(this.playerBGLValue, 1)}`);
 
       if (this.playerFoodValue > 0) {
         this.playerFoodValue -= 1;
@@ -296,7 +283,7 @@ var vue = new Vue({
           .then(function (results) {
               var newResults = results.clone();
               // modify the new results
-              console.log(newResults);
+              //console.log(newResults);
               return newResults;
           });
       }
