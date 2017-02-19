@@ -312,7 +312,10 @@ var vue = new Vue({
               return newResults;
           });
       }
-
+      if (this.playerBGLValue <= 0) {
+        this.playerHeartsValue = 0;
+        this.stopGameLoop();
+      }
       var chart = Connect.visualize(resultsFactory)
       .as('chart')
       .inside('#chart')
